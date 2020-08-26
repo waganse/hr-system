@@ -40,4 +40,8 @@ type Department @model @searchable {
 type EmploymentType @model @searchable {
   id: ID!
   name: String!
+  useSalary: Boolean
+  useRate: Boolean
+  useFixedRate: Boolean
+  useCommission: Boolean
 }

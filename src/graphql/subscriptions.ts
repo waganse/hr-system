@@ -271,6 +271,10 @@ export const onCreateEmploymentType = /* GraphQL */ `
     onCreateEmploymentType {
       id
       name
+      useSalary
+      useRate
+      useFixedRate
+      useCommission
       createdAt
       updatedAt
     }
@@ -281,6 +285,10 @@ export const onUpdateEmploymentType = /* GraphQL */ `
     onUpdateEmploymentType {
       id
       name
+      useSalary
+      useRate
+      useFixedRate
+      useCommission
       createdAt
       updatedAt
     }
@@ -291,6 +299,10 @@ export const onDeleteEmploymentType = /* GraphQL */ `
     onDeleteEmploymentType {
       id
       name
+      useSalary
+      useRate
+      useFixedRate
+      useCommission
       createdAt
       updatedAt
     }

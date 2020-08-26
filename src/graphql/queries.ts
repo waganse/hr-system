@@ -188,6 +188,10 @@ export const getEmploymentType = /* GraphQL */ `
     getEmploymentType(id: $id) {
       id
       name
+      useSalary
+      useRate
+      useFixedRate
+      useCommission
       createdAt
       updatedAt
     }
@@ -203,6 +207,10 @@ export const listEmploymentTypes = /* GraphQL */ `
       items {
         id
         name
+        useSalary
+        useRate
+        useFixedRate
+        useCommission
         createdAt
         updatedAt
       }
@@ -340,6 +348,10 @@ export const searchEmploymentTypes = /* GraphQL */ `
       items {
         id
         name
+        useSalary
+        useRate
+        useFixedRate
+        useCommission
         createdAt
         updatedAt
       }

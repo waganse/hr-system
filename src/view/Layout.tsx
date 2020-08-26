@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import {
   PieChartOutlined,
@@ -11,26 +12,35 @@ import logo from '../logo.svg'
 const { Header, Content, Sider, Footer } = Layout;
 
 export function PageLayout(props: any) {
+  const history = useHistory();
   const [collapsed, setCollapsed] = useState(false);
+  const [selectedKeys, setSelectedKeys] = useState([history.location.pathname.replace('/', '')]);
 
   const onCollapseHandler = (collapsed: boolean) => {
     setCollapsed(collapsed);
+  }
+
+  const onClickNav = (e: any) => {
+    const key: string = e.key ? e.key : 'employee';
+
+    setSelectedKeys([key]);
+    history.push(`/${key}`);
   }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapseHandler}>
         <div className="logo" style={{ height: 32, margin: 14 }}>
-          <img src={logo} alt="EMS" style={{ width: '100%', height: '100%' }}/>
+          <img src={logo} alt="EMS" style={{ width: '100%', height: '100%' }} onClick={onClickNav} />
         </div>
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-          <Menu.Item key="1" icon={<UserOutlined />}>
+        <Menu theme="dark" defaultSelectedKeys={['employee']} selectedKeys={selectedKeys} mode="inline" onClick={onClickNav}>
+          <Menu.Item key="employee" icon={<UserOutlined />}>
             Employee List
           </Menu.Item>
-          <Menu.Item key="2" icon={<PieChartOutlined />}>
+          <Menu.Item key="report" icon={<PieChartOutlined />}>
             Report
           </Menu.Item>
-          <Menu.Item key="3" icon={<SettingOutlined />}>
+          <Menu.Item key="setting" icon={<SettingOutlined />}>
             Settings
           </Menu.Item>
         </Menu>
@@ -46,6 +56,6 @@ export function PageLayout(props: any) {
           EMS - Employee Management System
         </Footer>
       </Layout>
-  </Layout>
-);
+    </Layout>
+  );
 }

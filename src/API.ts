@@ -201,18 +201,37 @@ export type DeleteDepartmentInput = {
 export type CreateEmploymentTypeInput = {
   id?: string | null,
   name: string,
+  useSalary?: boolean | null,
+  useRate?: boolean | null,
+  useFixedRate?: boolean | null,
+  useCommission?: boolean | null,
 };
 
 export type ModelEmploymentTypeConditionInput = {
   name?: ModelStringInput | null,
+  useSalary?: ModelBooleanInput | null,
+  useRate?: ModelBooleanInput | null,
+  useFixedRate?: ModelBooleanInput | null,
+  useCommission?: ModelBooleanInput | null,
   and?: Array< ModelEmploymentTypeConditionInput | null > | null,
   or?: Array< ModelEmploymentTypeConditionInput | null > | null,
   not?: ModelEmploymentTypeConditionInput | null,
 };
 
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type UpdateEmploymentTypeInput = {
   id: string,
   name?: string | null,
+  useSalary?: boolean | null,
+  useRate?: boolean | null,
+  useFixedRate?: boolean | null,
+  useCommission?: boolean | null,
 };
 
 export type DeleteEmploymentTypeInput = {
@@ -261,6 +280,10 @@ export type ModelDepartmentFilterInput = {
 export type ModelEmploymentTypeFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
+  useSalary?: ModelBooleanInput | null,
+  useRate?: ModelBooleanInput | null,
+  useFixedRate?: ModelBooleanInput | null,
+  useCommission?: ModelBooleanInput | null,
   and?: Array< ModelEmploymentTypeFilterInput | null > | null,
   or?: Array< ModelEmploymentTypeFilterInput | null > | null,
   not?: ModelEmploymentTypeFilterInput | null,
@@ -414,9 +437,18 @@ export enum SearchableDepartmentSortableFields {
 export type SearchableEmploymentTypeFilterInput = {
   id?: SearchableIDFilterInput | null,
   name?: SearchableStringFilterInput | null,
+  useSalary?: SearchableBooleanFilterInput | null,
+  useRate?: SearchableBooleanFilterInput | null,
+  useFixedRate?: SearchableBooleanFilterInput | null,
+  useCommission?: SearchableBooleanFilterInput | null,
   and?: Array< SearchableEmploymentTypeFilterInput | null > | null,
   or?: Array< SearchableEmploymentTypeFilterInput | null > | null,
   not?: SearchableEmploymentTypeFilterInput | null,
+};
+
+export type SearchableBooleanFilterInput = {
+  eq?: boolean | null,
+  ne?: boolean | null,
 };
 
 export type SearchableEmploymentTypeSortInput = {
@@ -427,6 +459,10 @@ export type SearchableEmploymentTypeSortInput = {
 export enum SearchableEmploymentTypeSortableFields {
   id = "id",
   name = "name",
+  useSalary = "useSalary",
+  useRate = "useRate",
+  useFixedRate = "useFixedRate",
+  useCommission = "useCommission",
 }
 
 
@@ -767,6 +803,10 @@ export type CreateEmploymentTypeMutation = {
     __typename: "EmploymentType",
     id: string,
     name: string,
+    useSalary: boolean | null,
+    useRate: boolean | null,
+    useFixedRate: boolean | null,
+    useCommission: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -782,6 +822,10 @@ export type UpdateEmploymentTypeMutation = {
     __typename: "EmploymentType",
     id: string,
     name: string,
+    useSalary: boolean | null,
+    useRate: boolean | null,
+    useFixedRate: boolean | null,
+    useCommission: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -797,6 +841,10 @@ export type DeleteEmploymentTypeMutation = {
     __typename: "EmploymentType",
     id: string,
     name: string,
+    useSalary: boolean | null,
+    useRate: boolean | null,
+    useFixedRate: boolean | null,
+    useCommission: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1022,6 +1070,10 @@ export type GetEmploymentTypeQuery = {
     __typename: "EmploymentType",
     id: string,
     name: string,
+    useSalary: boolean | null,
+    useRate: boolean | null,
+    useFixedRate: boolean | null,
+    useCommission: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1040,6 +1092,10 @@ export type ListEmploymentTypesQuery = {
       __typename: "EmploymentType",
       id: string,
       name: string,
+      useSalary: boolean | null,
+      useRate: boolean | null,
+      useFixedRate: boolean | null,
+      useCommission: boolean | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -1172,6 +1228,10 @@ export type SearchEmploymentTypesQuery = {
       __typename: "EmploymentType",
       id: string,
       name: string,
+      useSalary: boolean | null,
+      useRate: boolean | null,
+      useFixedRate: boolean | null,
+      useCommission: boolean | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -1467,6 +1527,10 @@ export type OnCreateEmploymentTypeSubscription = {
     __typename: "EmploymentType",
     id: string,
     name: string,
+    useSalary: boolean | null,
+    useRate: boolean | null,
+    useFixedRate: boolean | null,
+    useCommission: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1477,6 +1541,10 @@ export type OnUpdateEmploymentTypeSubscription = {
     __typename: "EmploymentType",
     id: string,
     name: string,
+    useSalary: boolean | null,
+    useRate: boolean | null,
+    useFixedRate: boolean | null,
+    useCommission: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1487,6 +1555,10 @@ export type OnDeleteEmploymentTypeSubscription = {
     __typename: "EmploymentType",
     id: string,
     name: string,
+    useSalary: boolean | null,
+    useRate: boolean | null,
+    useFixedRate: boolean | null,
+    useCommission: boolean | null,
     createdAt: string,
     updatedAt: string,
   } | null,

@@ -24,6 +24,10 @@ export type DepartmentMaster = {
 export type EmploymentTypeMaster = {
     id?: string | null;
     name?: string;
+    useSalary?: boolean;
+    useRate?: boolean;
+    useFixedRate?: boolean;
+    useCommission?: boolean;
 }
 
 export type EmployeeState = {
@@ -78,4 +82,27 @@ export type TableColumn = {
         value: string;
     }[];
     onFilter?: any;
+}
+
+export type FormField = {
+    label: string;
+    name: string;
+    type: string;
+    rules: FormRule[];
+    placeholder?: string;
+    span?: number;
+    options?: FormOption[];
+}
+
+type FormRule = {
+    required?: boolean;
+    type?: string;
+    min?: number;
+    max?: number;
+    message?: string;
+}
+
+type FormOption = {
+    key: string;
+    value: string;
 }

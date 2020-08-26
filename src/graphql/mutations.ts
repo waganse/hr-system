@@ -301,6 +301,10 @@ export const createEmploymentType = /* GraphQL */ `
     createEmploymentType(input: $input, condition: $condition) {
       id
       name
+      useSalary
+      useRate
+      useFixedRate
+      useCommission
       createdAt
       updatedAt
     }
@@ -314,6 +318,10 @@ export const updateEmploymentType = /* GraphQL */ `
     updateEmploymentType(input: $input, condition: $condition) {
       id
       name
+      useSalary
+      useRate
+      useFixedRate
+      useCommission
       createdAt
       updatedAt
     }
@@ -327,6 +335,10 @@ export const deleteEmploymentType = /* GraphQL */ `
     deleteEmploymentType(input: $input, condition: $condition) {
       id
       name
+      useSalary
+      useRate
+      useFixedRate
+      useCommission
       createdAt
       updatedAt
     }

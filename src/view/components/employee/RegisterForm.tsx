@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ReactText } from 'react';
 import { Button, Form, Col, Row, Input, InputNumber, Drawer, Select, DatePicker, Divider } from 'antd';
-import { EmployeeMaster, DepartmentMaster } from '../../../typings';
+import { EmployeeMaster, DepartmentMaster, EmploymentTypeMaster } from '../../../typings';
 import { SelectValue } from 'antd/lib/select';
 
 type Props = {
@@ -8,6 +8,7 @@ type Props = {
   title: string;
   initialValues: EmployeeMaster;
   departmentList: DepartmentMaster[];
+  employmentTypeList: EmploymentTypeMaster[];
   onSubmit: (input: any) => void;
   onClose: () => void;
 }
@@ -17,32 +18,35 @@ export function RegisterForm({
   title,
   initialValues,
   departmentList,
+  employmentTypeList,
   onSubmit,
   onClose,
 }: Props) {
-  const [selectedDepartment, setDepartment] = useState('');
+  const [employmentTypeObj, setEmploymentTypeObj] = useState({});
+  const [selectedEmploymentType, setEmploymentType] = useState('');
   const [ form ] = Form.useForm();
   const DATE_FORMAT = 'DD/MM/YYYY';
-  const wageInfo = {
-    salary: ['Full-time'],
-    rate: ['Part-time fixed', 'Part-time commissioned'],
-    fixedRate: ['Part-time fixed', 'Intern'],
-    commission: ['Part-time commissioned'],
-  };
 
   const onChangeEmploymentTypeHandler = (value: SelectValue) => {
-    console.clear();
-console.log('===================');
-console.log(value);
-console.log('===================');
-    setDepartment(value as string);
+    setEmploymentType(value as string);
   }
 
   useEffect(() => {
     form.resetFields();
-    setDepartment(initialValues.employmentType as string);
+    setEmploymentType(initialValues.employmentType as string);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialValues]);
+
+  useEffect(() => {
+    const _obj = {};
+
+    for (const { name, ...rest } of employmentTypeList) {
+      _obj[name as string] = rest;
+    }
+
+    setEmploymentTypeObj(_obj);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [employmentTypeList]);
 
   return (
     <Drawer
@@ -199,10 +203,9 @@ console.log('===================');
                 placeholder="Please choose the employment type"
                 onChange={onChangeEmploymentTypeHandler}
               >
-                <Select.Option value="Full-time">Full-time</Select.Option>
-                <Select.Option value="Part-time fixed">Part-time fixed</Select.Option>
-                <Select.Option value="Part-time commissioned">Part-time commissioned</Select.Option>
-                <Select.Option value="Intern">Intern</Select.Option>
+                { employmentTypeList.map(item => (
+                  <Select.Option key={item.id as string} value={item.name as ReactText}>{item.name}</Select.Option>
+                )) }
               </Select>
             </Form.Item>
           </Col>
@@ -219,7 +222,7 @@ console.log('===================');
                 placeholder="Please enter salary"
                 maxLength={20}
                 min={0}
-                disabled={!wageInfo.salary.includes(selectedDepartment)}
+                disabled={!employmentTypeObj[selectedEmploymentType]?.useSalary}
               />
             </Form.Item>
           </Col>
@@ -234,7 +237,7 @@ console.log('===================');
                 placeholder="Please enter rate"
                 maxLength={20}
                 min={0}
-                disabled={!wageInfo.rate.includes(selectedDepartment)}
+                disabled={!employmentTypeObj[selectedEmploymentType]?.useRate}
               />
             </Form.Item>
           </Col>
@@ -251,7 +254,7 @@ console.log('===================');
                 placeholder="Please enter fixed rate"
                 maxLength={20}
                 min={0}
-                disabled={!wageInfo.fixedRate.includes(selectedDepartment)}
+                disabled={!employmentTypeObj[selectedEmploymentType]?.useFixedRate}
               />
             </Form.Item>
           </Col>
@@ -267,7 +270,7 @@ console.log('===================');
                 min={0}
                 formatter={value => `${value}%`}
                 parser={value => value ? value.replace('%', '') : ''}
-                disabled={!wageInfo.commission.includes(selectedDepartment)}
+                disabled={!employmentTypeObj[selectedEmploymentType]?.useCommission}
               />
             </Form.Item>
           </Col>

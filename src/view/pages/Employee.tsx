@@ -3,9 +3,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 import { getManyEmployees, createOneEmployee, updateOneEmployee, deleteOneEmployee, selectEmployee, initialEmployee } from '../../domain/store/employeeSlice';
 import { getManyDepartments, selectDepartment } from '../../domain/store/departmentSlice';
-import { EmployeeMaster, EmployeeFetchParams, TableColumn, DepartmentFetchParams } from '../../typings';
-import { networkFetchEmployeeList, networkCreateEmployee, networkUpdateEmployee, networkDeleteEmployee } from '../../domain/network/employee';
-import { networkFetchDepartmentList } from '../../domain/network/department';
+import { getManyEmploymentTypes, selectEmploymentType } from '../../domain/store/employmentTypeSlice';
+import {
+  networkFetchEmployeeList,
+  networkCreateEmployee,
+  networkUpdateEmployee,
+  networkDeleteEmployee,
+  networkFetchDepartmentList,
+  networkFetchEmploymentTypeList,
+} from '../../domain/network';
+import { EmployeeMaster, EmployeeFetchParams, TableColumn, DepartmentFetchParams, EmploymentTypeFetchParams } from '../../typings';
 import { Table, Space, Popconfirm, Button, Row, Col, message, Modal, Upload, Input } from 'antd';
 import { InboxOutlined, ImportOutlined, SearchOutlined, UserAddOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -15,12 +22,14 @@ import { UploadChangeParam } from 'antd/lib/upload';
 export function Employee(props: any) {
   const employeeList = useSelector(selectEmployee);
   const departmentList = useSelector(selectDepartment);
+  const employmentTypeList = useSelector(selectEmploymentType);
   const [formVisible, setFormVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [isNew, setIsNew] = useState(true);
   const [selectedItem, setSelectedItem] = useState(initialEmployee);
   const [fileList, setFileList] = useState([]);
   const [bulkEmployeeList, setBulkEmployeeList] = useState([])
+  const [loading, setLoading] = useState(true)
   const dispatch = useDispatch();
   const DATE_FORMAT = 'DD/MM/YYYY';
 
@@ -126,6 +135,13 @@ export function Employee(props: any) {
         const val = a.employeeType ? a.employeeType : '';
         return val.localeCompare(b.employeeType);
       },
+      filters: employmentTypeList.items.map(item => {
+        return { text: item.name as string, value: item.name as string }
+      }),
+      onFilter: (value: string, record: EmployeeMaster) => {
+        const name = record.employmentType ? record.employmentType : '';
+        return name.includes(value);
+      }
     },
     {
       title: 'Salary',
@@ -189,6 +205,8 @@ export function Employee(props: any) {
   useEffect(() => {
     fetchEmployeeListHandler({});
     fetchDepartmentListHandler({});
+    fetchEmploymentTypeListHandler({});
+    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -198,6 +216,10 @@ export function Employee(props: any) {
 
   const fetchDepartmentListHandler = async (params: DepartmentFetchParams) => {
     dispatch(getManyDepartments(await networkFetchDepartmentList(params)));
+  }
+
+  const fetchEmploymentTypeListHandler = async (params: EmploymentTypeFetchParams) => {
+    dispatch(getManyEmploymentTypes(await networkFetchEmploymentTypeList(params)));
   }
 
   const deleteEmployeeHandler = async (id: string) => {
@@ -339,6 +361,7 @@ export function Employee(props: any) {
           scroll={{ x: 2600 }}
           pagination={{ position: ['bottomRight'], defaultPageSize: 100, size: 'small' }}
           bordered
+          loading={loading}
         />
       ) : null }
 
@@ -347,6 +370,7 @@ export function Employee(props: any) {
         title={isNew ? 'Add a new employee' : 'Edit employee information'}
         initialValues={selectedItem}
         departmentList={departmentList.items}
+        employmentTypeList={employmentTypeList.items}
         onSubmit={onSubmitFormHandler}
         onClose={onCloseDrawerHandler}
       />

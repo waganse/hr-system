@@ -5,6 +5,10 @@ import { EmploymentTypeMaster, EmploymentTypeState } from '../../typings';
 export const initialEmploymentType: EmploymentTypeMaster = {
   id: null,
   name: '',
+  useSalary: false,
+  useRate: false,
+  useFixedRate: false,
+  useCommission: false,
 };
 
 const initialState: EmploymentTypeState = {
@@ -55,6 +59,6 @@ export const { getManyEmploymentTypes, getOneEmploymentType, searchManyEmploymen
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectDepartment = (state: RootState) => state.employmentTypeList;
+export const selectEmploymentType = (state: RootState) => state.employmentTypeList;
 
 export default employmentTypeSlice.reducer;

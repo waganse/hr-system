@@ -1,45 +1,45 @@
 import { API, graphqlOperation } from 'aws-amplify';
-import { createDepartment, updateDepartment, deleteDepartment } from '../../graphql/mutations';
-import { DepartmentMaster, DepartmentFetchParams, DeleteParams } from '../../typings';
-import { listDepartments } from '../../graphql/queries';
+import { createEmploymentType, updateEmploymentType, deleteEmploymentType } from '../../graphql/mutations';
+import { EmploymentTypeMaster, EmploymentTypeFetchParams, DeleteParams } from '../../typings';
+import { listEmploymentTypes } from '../../graphql/queries';
 import { message } from 'antd';
 
-export const networkFetchDepartmentList = async ({ filter, limit = 100, nextToken }: DepartmentFetchParams) => {
+export const networkFetchEmploymentTypeList = async ({ filter, limit = 100, nextToken }: EmploymentTypeFetchParams) => {
     try {
-        const result: any = await API.graphql(graphqlOperation(listDepartments, { filter, limit, nextToken }));
+        const result: any = await API.graphql(graphqlOperation(listEmploymentTypes, { filter, limit, nextToken }));
 
-        return result.data.listDepartments;
+        return result.data.listEmploymentTypes;
     } catch(e) {
-        message.error('Failed to get department information')
+        message.error('Failed to get employmentType information')
     }
 }
 
-export const networkCreateDepartment = async (input: DepartmentMaster) => {
+export const networkCreateEmploymentType = async (input: EmploymentTypeMaster) => {
     try {
-        const result: any = await API.graphql(graphqlOperation(createDepartment, { input }));
+        const result: any = await API.graphql(graphqlOperation(createEmploymentType, { input }));
 
-        return result.data.createDepartment;
+        return result.data.createEmploymentType;
     } catch(e) {
-        message.error('Failed to create an department')
+        message.error('Failed to create an employmentType')
     }
 }
 
-export const networkUpdateDepartment = async (input: DepartmentMaster) => {
+export const networkUpdateEmploymentType = async (input: EmploymentTypeMaster) => {
     try {
-        const result: any = await API.graphql(graphqlOperation(updateDepartment, { input }));
+        const result: any = await API.graphql(graphqlOperation(updateEmploymentType, { input }));
 
-        return result.data.updateDepartment;
+        return result.data.updateEmploymentType;
     } catch(e) {
-        message.error('Failed to update department information')
+        message.error('Failed to update employmentType information')
     }
 }
 
-export const networkDeleteDepartment = async (input: DeleteParams) => {
+export const networkDeleteEmploymentType = async (input: DeleteParams) => {
     try {
-        const result: any = await API.graphql(graphqlOperation(deleteDepartment, { input }));
+        const result: any = await API.graphql(graphqlOperation(deleteEmploymentType, { input }));
 
-        return result.data.deleteDepartment;
+        return result.data.deleteEmploymentType;
     } catch(e) {
-        message.error('Failed to delete department information')
+        message.error('Failed to delete employmentType information')
     }
 }

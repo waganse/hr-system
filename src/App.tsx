@@ -3,13 +3,15 @@ import { PageLayout } from './view/Layout';
 import { Employee } from './view/pages/Employee';
 import { Setting } from './view/pages/Setting';
 import { withAuthenticator, AmplifyTheme } from 'aws-amplify-react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
     <PageLayout>
-      <Route path="/employee" component={Employee} />
-      <Route path="/setting" component={Setting} />
+      <Switch>
+        <Route path="/employee" component={Employee} />
+        <Route path="/setting" component={Setting} />
+      </Switch>
     </PageLayout>
   );
 }
