@@ -249,6 +249,7 @@ export function MasterList({
         columns={[...config[type].columns, ...commonColumns]}
         dataSource={normalizedList}
         pagination={{ position: ['bottomRight'], defaultPageSize: 100, size: 'small' }}
+        size="middle"
         bordered
         loading={loading}
       />

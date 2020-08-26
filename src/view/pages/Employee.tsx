@@ -353,17 +353,16 @@ export function Employee(props: any) {
         </Col>
       </Row>
 
-      { employeeList.items.length ? (
-        <Table
-          rowKey="id"
-          columns={columns}
-          dataSource={employeeList.items}
-          scroll={{ x: 2600 }}
-          pagination={{ position: ['bottomRight'], defaultPageSize: 100, size: 'small' }}
-          bordered
-          loading={loading}
-        />
-      ) : null }
+      <Table
+        rowKey="id"
+        columns={columns}
+        dataSource={employeeList.items}
+        scroll={{ x: 2600 }}
+        pagination={{ position: ['bottomRight'], defaultPageSize: 100, size: 'small' }}
+        size="small"
+        bordered
+        loading={loading}
+      />
 
       <RegisterForm
         visible={formVisible}
