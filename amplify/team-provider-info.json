@@ -1,0 +1,20 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-hrsystem-dev-161545-authRole",
+            "UnauthRoleArn": "arn:aws:iam::414742917823:role/amplify-hrsystem-dev-161545-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::414742917823:role/amplify-hrsystem-dev-161545-authRole",
+            "Region": "ap-northeast-1",
+            "DeploymentBucketName": "amplify-hrsystem-dev-161545-deployment",
+            "UnauthRoleName": "amplify-hrsystem-dev-161545-unauthRole",
+            "StackName": "amplify-hrsystem-dev-161545",
+            "StackId": "arn:aws:cloudformation:ap-northeast-1:414742917823:stack/amplify-hrsystem-dev-161545/4d29d6e0-e447-11ea-a5bd-0a949e552770",
+            "AmplifyAppId": "d1unu47cl64rsg"
+        },
+        "categories": {
+            "auth": {
+                "hrsystem29c6b55a": {}
+            }
+        }
+    }
+}

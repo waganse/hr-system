@@ -1,0 +1,43 @@
+type Employee @model @searchable {
+  id: ID!
+  fullName: String!
+  email: String!
+  designation: String!
+  department: String!
+  employmentType: String!
+  age: Int
+  address: String
+  contact: String
+  salary: Float
+  rate: Float
+  fixedRate: Float
+  commission: Float
+  hoursWorked: Float
+  joinDate: String
+  image: S3Object
+  workHours: [WorkHour] @connection(keyName: "byEmployee", fields: ["id"])
+}
+
+type WorkHour @model @searchable @key(name: "byEmployee", fields: ["employeeId"]) {
+  id: ID!
+  hour: Float!
+  workedOn: String!
+  employeeId: ID!
+  employee: Employee @connection(fields: ["employeeId"])
+}
+
+type S3Object {
+  bucket: String!
+  region: String!
+  key: String!
+}
+
+type Department @model @searchable {
+  id: ID!
+  name: String!
+}
+
+type EmploymentType @model @searchable {
+  id: ID!
+  name: String!
+}
