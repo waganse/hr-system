@@ -1,6 +1,4 @@
 {
-    "identityPoolName": "hrsystem29c6b55a_identitypool_29c6b55a",
-    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "hrsyst29c6b55a",
     "userPoolName": "hrsystem29c6b55a_userpool_29c6b55a",
     "autoVerifiedAttributes": [
@@ -32,7 +30,7 @@
     "userpoolClientSetAttributes": false,
     "sharedId": "29c6b55a",
     "resourceName": "hrsystem29c6b55a",
-    "authSelections": "identityPoolAndUserPool",
+    "authSelections": "userPoolOnly",
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -45,10 +43,34 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
+    "useDefault": "manual",
     "usernameAttributes": [
         "email"
     ],
-    "userPoolGroupList": [],
-    "dependsOn": []
+    "userPoolGroupList": [
+        "admin",
+        "accountAdmin",
+        "hrAdmin"
+    ],
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "hrsystem29c6b55aPostConfirmation",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        }
+    ],
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": "{\"PostConfirmation\":[\"add-to-group\"]}",
+    "hostedUI": false,
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [
+        "{\"policyName\":\"AddToGroupCognito\",\"trigger\":\"PostConfirmation\",\"effect\":\"Allow\",\"actions\":[\"cognito-idp:AdminAddUserToGroup\",\"cognito-idp:GetGroup\",\"cognito-idp:CreateGroup\"],\"resource\":{\"paramType\":\"!GetAtt\",\"keys\":[\"UserPool\",\"Arn\"]}}"
+    ]
 }

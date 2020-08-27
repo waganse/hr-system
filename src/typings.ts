@@ -1,3 +1,8 @@
+export type SignInUserMaster = {
+    roles?: string[];
+    name?: string;
+}
+
 export type EmployeeMaster = {
     id?: string | null;
     fullName?: string;

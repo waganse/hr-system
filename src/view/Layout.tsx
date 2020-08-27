@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory, NavLink } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
+import { initSignInUserInfo } from '../domain/store/authSlice';
 import { Layout, Menu, Row, Col, Button, message } from 'antd';
 import {
   PieChartOutlined,
@@ -14,6 +16,7 @@ const { Header, Content, Sider, Footer } = Layout;
 
 export function PageLayout(props: any) {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState([history.location.pathname.replace('/', '')]);
 
@@ -28,20 +31,33 @@ export function PageLayout(props: any) {
     history.push(`/${key}`);
   }
 
-  const signOutHandler = () => {
-    console.log(Auth.currentAuthenticatedUser())
-    Auth.signOut()
-    .catch(e => message.error('Failed to sign out'))
+  const initUserPermission = async () => {
+    const user = await Auth.currentAuthenticatedUser();
+    const roles = user.signInUserSession.accessToken.payload["cognito:groups"];
+    const name = user.username;
+
+    dispatch(initSignInUserInfo({ roles, name }));
   }
+
+  const signOutHandler = async () => {
+    Auth.signOut()
+    .catch(e => message.error('Failed to sign out'));
+
+  }
+
+  useEffect(() => {
+    initUserPermission();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header className="header">
         <Row justify="space-between">
           <Col>
-            <a href="#" onClick={onClickNav}>
-              <img src={logo} alt="EMS" style={{ width: 100, height: 30 }} onClick={onClickNav} />
-            </a>
+            <NavLink to="/">
+              <img src={logo} alt="EMS" style={{ width: 100, height: 30 }} />
+            </NavLink>
           </Col>
           <Col>
             <Button onClick={signOutHandler}>
@@ -57,6 +73,7 @@ export function PageLayout(props: any) {
             mode="inline"
             defaultSelectedKeys={['employee']}
             selectedKeys={selectedKeys}
+            onClick={onClickNav}
           >
             <Menu.Item key="employee" icon={<UserOutlined />} style={{ marginTop: 0 }}>
               Employee List
@@ -86,34 +103,5 @@ export function PageLayout(props: any) {
         </Layout>
       </Layout>
     </Layout>
-    // <Layout style={{ minHeight: '100vh' }}>
-    //   <Sider collapsible collapsed={collapsed} onCollapse={onCollapseHandler}>
-    //     <div className="logo" style={{ height: 32, margin: 14 }}>
-    //       <img src={logo} alt="EMS" style={{ width: '100%', height: '100%' }} onClick={onClickNav} />
-    //     </div>
-    //     <Menu theme="dark" defaultSelectedKeys={['employee']} selectedKeys={selectedKeys} mode="inline" onClick={onClickNav}>
-    //       <Menu.Item key="employee" icon={<UserOutlined />}>
-    //         Employee List
-    //       </Menu.Item>
-    //       <Menu.Item key="report" icon={<PieChartOutlined />}>
-    //         Report
-    //       </Menu.Item>
-    //       <Menu.Item key="setting" icon={<SettingOutlined />}>
-    //         Settings
-    //       </Menu.Item>
-    //     </Menu>
-    //   </Sider>
-    //   <Layout className="site-layout">
-    //     <Header className="site-layout-background" style={{ padding: 0 }} />
-    //     <Content style={{ margin: '0 16px' }}>
-    //       <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-    //         {props.children}
-    //       </div>
-    //     </Content>
-    //     <Footer style={{ textAlign: 'center', color: '#888' }}>
-    //       EMS - Employee Management System
-    //     </Footer>
-    //   </Layout>
-    // </Layout>
   );
 }

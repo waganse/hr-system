@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
+import { selectAuth } from '../../domain/store/authSlice';
 import { getManyEmployees, createOneEmployee, updateOneEmployee, deleteOneEmployee, selectEmployee, initialEmployee } from '../../domain/store/employeeSlice';
 import { getManyDepartments, selectDepartment } from '../../domain/store/departmentSlice';
 import { getManyEmploymentTypes, selectEmploymentType } from '../../domain/store/employmentTypeSlice';
@@ -20,8 +21,10 @@ import { RegisterForm } from '../components/employee/RegisterForm'
 import { UploadChangeParam } from 'antd/lib/upload';
 
 export function Employee(props: any) {
+  const dispatch = useDispatch();
   const employeeList = useSelector(selectEmployee);
   const departmentList = useSelector(selectDepartment);
+  const signInUser = useSelector(selectAuth);
   const employmentTypeList = useSelector(selectEmploymentType);
   const [formVisible, setFormVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -30,7 +33,6 @@ export function Employee(props: any) {
   const [fileList, setFileList] = useState([]);
   const [bulkEmployeeList, setBulkEmployeeList] = useState([])
   const [loading, setLoading] = useState(true)
-  const dispatch = useDispatch();
   const DATE_FORMAT = 'DD/MM/YYYY';
 
   const columns:TableColumn[] = [
@@ -322,6 +324,8 @@ export function Employee(props: any) {
   return (
     <>
       <h2>Employee List</h2>
+  <p>{signInUser.name}</p>
+  <p>{signInUser.roles?.map(role => (role))}</p>
 
       <Row justify="space-between" style={{ marginBottom: 16 }}>
         <Col span={6}>
