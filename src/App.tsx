@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageLayout } from './view/Layout';
 import { Employee } from './view/pages/Employee';
+import { Landing } from './view/pages/Landing';
 import { Setting } from './view/pages/Setting';
 import { withAuthenticator, AmplifyTheme } from 'aws-amplify-react';
 import { Route, Switch } from 'react-router-dom';
@@ -9,6 +10,7 @@ function App() {
   return (
     <PageLayout>
       <Switch>
+        <Route path="/" exact component={Landing} />
         <Route path="/employee" component={Employee} />
         <Route path="/setting" component={Setting} />
       </Switch>
@@ -32,4 +34,4 @@ const theme = {
   }
 }
 
-export default withAuthenticator(App, true, [], null, theme);
+export default withAuthenticator(App, false, [], null, theme);
