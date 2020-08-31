@@ -1,6 +1,10 @@
-export type SignInUserMaster = {
-    roles?: string[];
-    name?: string;
+export type AuthMaster = {
+    isAuth: boolean;
+    token?: string;
+    user: {
+        roles?: string[];
+        name?: string;
+    }
 }
 
 export type EmployeeMaster = {

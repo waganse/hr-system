@@ -1,33 +1,33 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { SignInUserMaster } from '../../typings'
+import { AuthMaster } from '../../typings'
 
-const initialState: SignInUserMaster = {
-  roles: [],
-  name: '',
+const initialState: AuthMaster = {
+  isAuth: false,
+  token: '',
+  user: {
+    roles: [],
+    name: '',
+  }
 };
 
 export const authSlice = createSlice({
   name: 'signInUser',
   initialState,
   reducers: {
-    initSignInUserInfo: (state, action: PayloadAction<SignInUserMaster>) => {
-      state.roles = action.payload.roles;
-      state.name = action.payload.name;
-
-      console.clear();
-console.log('===================');
-console.log(action.payload);
-console.log('===================');
+    updateAuthState: (state, action: PayloadAction<AuthMaster>) => {
+      state.isAuth = action.payload.isAuth;
+      state.user.roles = action.payload.user.roles;
+      state.user.name = action.payload.user.name;
     },
   },
 });
 
-export const { initSignInUserInfo } = authSlice.actions;
+export const { updateAuthState } = authSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectAuth = (state: RootState) => state.signInUser;
+export const selectAuth = (state: RootState) => state.auth;
 
 export default authSlice.reducer;

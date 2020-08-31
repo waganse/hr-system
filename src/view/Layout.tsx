@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
 import { useHistory, NavLink } from 'react-router-dom';
-import { Auth } from 'aws-amplify';
-import { initSignInUserInfo } from '../domain/store/authSlice';
+import { networkSignOut } from '../domain/network';
 import { Layout, Menu, Row, Col, Button, message } from 'antd';
 import {
   PieChartOutlined,
@@ -16,7 +14,6 @@ const { Header, Content, Sider, Footer } = Layout;
 
 export function PageLayout(props: any) {
   const history = useHistory();
-  const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState([history.location.pathname.replace('/', '')]);
 
@@ -31,24 +28,11 @@ export function PageLayout(props: any) {
     history.push(`/${key}`);
   }
 
-  const initUserPermission = async () => {
-    const user = await Auth.currentAuthenticatedUser();
-    const roles = user.signInUserSession.accessToken.payload["cognito:groups"];
-    const name = user.username;
-
-    dispatch(initSignInUserInfo({ roles, name }));
-  }
-
   const signOutHandler = async () => {
-    Auth.signOut()
-    .catch(e => message.error('Failed to sign out'));
-
+    await networkSignOut();
+    message.info('Signed out');
+    history.push('/auth/signin');
   }
-
-  useEffect(() => {
-    initUserPermission();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>

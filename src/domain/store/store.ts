@@ -6,7 +6,7 @@ import employmentTypeReducer from './employmentTypeSlice';
 
 export const store = configureStore({
   reducer: {
-    signInUser: authReducer,
+    auth: authReducer,
     employeeList: employeeReducer,
     departmentList: departmentReducer,
     employmentTypeList: employmentTypeReducer,

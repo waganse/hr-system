@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { selectAuth } from '../../domain/store/authSlice';
 import { getManyDepartments, createOneDepartment, updateOneDepartment, deleteOneDepartment, selectDepartment, initialDepartment } from '../../domain/store/departmentSlice';
 import { getManyEmploymentTypes, createOneEmploymentType, updateOneEmploymentType, deleteOneEmploymentType, selectEmploymentType, initialEmploymentType } from '../../domain/store/employmentTypeSlice';
 import {
@@ -15,12 +16,14 @@ import {
 import { DepartmentFetchParams, EmploymentTypeFetchParams } from '../../typings';
 import { message, Tabs } from 'antd';
 import { MasterList } from '../components/master/MasterList';
+import { PageLayout } from '../Layout';
 
 type FetchParams = DepartmentFetchParams | EmploymentTypeFetchParams;
 
 export function Setting() {
   const departmentList = useSelector(selectDepartment);
   const employmentTypeList = useSelector(selectEmploymentType);
+  const authState = useSelector(selectAuth);
   const [selectedMaster, setSelectedMaster] = useState('department');
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -65,9 +68,11 @@ export function Setting() {
   };
 
   useEffect(() => {
-    fetchHandler({});
+    if (authState.isAuth) {
+      fetchHandler({});
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedMaster]);
+  }, [authState.isAuth]);
 
   const fetchHandler = async (params: FetchParams) => {
     const dispatcher = actionMap[selectedMaster].fetch.dispatch;
@@ -106,7 +111,7 @@ export function Setting() {
   }
 
   return (
-    <>
+    <PageLayout>
       <Tabs defaultActiveKey="1" onChange={key => onChangeTabHandler(key)}>
         <Tabs.TabPane tab="Departments" key="department">
           <MasterList
@@ -133,6 +138,6 @@ export function Setting() {
           />
         </Tabs.TabPane>
       </Tabs>
-    </>
+    </PageLayout>
   );
 }

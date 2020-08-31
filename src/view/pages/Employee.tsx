@@ -19,13 +19,14 @@ import { InboxOutlined, ImportOutlined, SearchOutlined, UserAddOutlined, EditOut
 import moment from 'moment';
 import { RegisterForm } from '../components/employee/RegisterForm'
 import { UploadChangeParam } from 'antd/lib/upload';
+import { PageLayout } from '../Layout';
 
 export function Employee(props: any) {
   const dispatch = useDispatch();
   const employeeList = useSelector(selectEmployee);
   const departmentList = useSelector(selectDepartment);
-  const signInUser = useSelector(selectAuth);
   const employmentTypeList = useSelector(selectEmploymentType);
+  const authState = useSelector(selectAuth);
   const [formVisible, setFormVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [isNew, setIsNew] = useState(true);
@@ -205,12 +206,14 @@ export function Employee(props: any) {
   };
 
   useEffect(() => {
-    fetchEmployeeListHandler({});
-    fetchDepartmentListHandler({});
-    fetchEmploymentTypeListHandler({});
-    setLoading(false);
+    if (authState.isAuth) {
+      fetchEmployeeListHandler({});
+      fetchDepartmentListHandler({});
+      fetchEmploymentTypeListHandler({});
+      setLoading(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [authState.isAuth]);
 
   const fetchEmployeeListHandler = async (params: EmployeeFetchParams) => {
     dispatch(getManyEmployees(await networkFetchEmployeeList(params)));
@@ -308,8 +311,6 @@ export function Employee(props: any) {
   const onSearchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-
-
   }
 
   const onCloseDrawerHandler = () => {
@@ -322,10 +323,10 @@ export function Employee(props: any) {
   }
 
   return (
-    <>
+    <PageLayout>
       <h2>Employee List</h2>
-  <p>{signInUser.name}</p>
-  <p>{signInUser.roles?.map(role => (role))}</p>
+  {/* <p>{signInUser.name}</p>
+  <p>{signInUser.roles?.map(role => (role))}</p> */}
 
       <Row justify="space-between" style={{ marginBottom: 16 }}>
         <Col span={6}>
@@ -392,6 +393,6 @@ export function Employee(props: any) {
           <p className="ant-upload-text">Click or drag file to this area to upload</p>
         </Upload.Dragger>
       </Modal>
-    </>
+    </PageLayout>
   );
 }
