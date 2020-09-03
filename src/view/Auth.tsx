@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateAuthState } from '../domain/store/authSlice';
 import { networkFetchAuthState } from '../domain/network'
-import { message } from 'antd';
 
 export function AuthProvider(props: any) {
   const history = useHistory();
@@ -30,7 +29,6 @@ export function AuthProvider(props: any) {
         }
       }));
     } catch {
-      message.error('Session expired');
       history.push('/auth/signin');
     }
   }

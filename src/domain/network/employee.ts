@@ -1,10 +1,10 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import { createEmployee, updateEmployee, deleteEmployee } from '../../graphql/mutations';
-import { EmployeeMaster, EmployeeFetchParams, DeleteParams } from '../../typings';
+import { EmployeeMaster, FetchParams, DeleteParams } from '../../typings';
 import { listEmployees } from '../../graphql/queries';
 import { message } from 'antd';
 
-export const networkFetchEmployeeList = async ({ filter, limit = 100, nextToken }: EmployeeFetchParams) => {
+export const networkFetchEmployeeList = async ({ filter, limit = 100, nextToken }: FetchParams) => {
     try {
         const result: any = await API.graphql(graphqlOperation(listEmployees, { filter, limit, nextToken }));
 

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateAuthState } from '../../../domain/store/authSlice';
 import { networkSignIn, networkSignOut } from '../../../domain/network';
-import { Row, Col, Form, Input, Checkbox, Button, message } from 'antd';
+import { Form, Input, Checkbox, Button, message } from 'antd';
 
 export function SignIn() {
   const history = useHistory();
@@ -34,41 +34,44 @@ export function SignIn() {
   }
 
   return (
-    <Row justify="center" align="middle" style={{ height: '100vh', maxWidth: 350, margin: 'auto' }}>
-        <Col style={{ width: '100%' }}>
-          <Form
-            layout="vertical"
-            name="signin"
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
+    <div style={{ display: 'flex', alignItems: 'center', maxWidth: 350, height: '100vh', margin: 'auto' }}>
+      <div style={{ width: '100%' }}>
+        <h1>EMS</h1>
+        <Form
+          style={{ width: '100%' }}
+          layout="vertical"
+          name="signin"
+          initialValues={{ remember: true }}
+          requiredMark={false}
+          onFinish={onFinish}
+        >
+          <Form.Item
+            label="ID"
+            name="name"
+            rules={[{ required: true, message: 'Please input your user id!' }]}
           >
-            <Form.Item
-              label="ID"
-              name="name"
-              rules={[{ required: true, message: 'Please input your user id!' }]}
-            >
-              <Input />
-            </Form.Item>
+            <Input />
+          </Form.Item>
 
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[{ required: true, message: 'Please input your password!' }]}
-            >
-              <Input.Password />
-            </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
 
-            <Form.Item name="remember" valuePropName="checked">
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
+          <Form.Item name="remember" valuePropName="checked">
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
 
-            <Form.Item style={{ textAlign: 'center' }}>
-              <Button type="primary" htmlType="submit">
-                Sign in
-              </Button>
-            </Form.Item>
-          </Form>
-        </Col>
-      </Row>
+          <Form.Item style={{ textAlign: 'center' }}>
+            <Button type="primary" htmlType="submit">
+              Sign in
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </div>
   );
 }

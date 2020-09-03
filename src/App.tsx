@@ -4,6 +4,7 @@ import { AuthProvider } from './view/Auth';
 import { Landing } from './view/pages/Landing';
 import { SignIn } from './view/pages/auth/SignIn';
 import { Employee } from './view/pages/Employee';
+import { Payroll } from './view/pages/Payroll';
 import { Report } from './view/pages/Report';
 import { Setting } from './view/pages/Setting';
 
@@ -13,6 +14,7 @@ function App() {
       <Switch>
         <Route path="/" exact component={Landing} />
         <Route path="/employee" component={Employee} />
+        <Route path="/payroll" component={Payroll} />
         <Route path="/report" component={Report} />
         <Route path="/setting" component={Setting} />
         <Route path="/auth/signin" component={SignIn} />

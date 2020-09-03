@@ -1,4 +1,4 @@
-type Employee @model @searchable {
+type Employee @model {
   id: ID!
   fullName: String!
   email: String!
@@ -12,16 +12,15 @@ type Employee @model @searchable {
   rate: Float
   fixedRate: Float
   commission: Float
-  hoursWorked: Float
   joinDate: String
   image: S3Object
-  workHours: [WorkHour] @connection(keyName: "byEmployee", fields: ["id"])
 }
 
-type WorkHour @model @searchable @key(name: "byEmployee", fields: ["employeeId"]) {
+type Payroll @model @key(name: "byEmployee", fields: ["employeeId"]) {
   id: ID!
-  hour: Float!
-  workedOn: String!
+  hoursWorked: Float!
+  bonus: Float!
+  workedMonthYear: String
   employeeId: ID!
   employee: Employee @connection(fields: ["employeeId"])
 }
@@ -32,12 +31,12 @@ type S3Object {
   key: String!
 }
 
-type Department @model @searchable {
+type Department @model {
   id: ID!
   name: String!
 }
 
-type EmploymentType @model @searchable {
+type EmploymentType @model {
   id: ID!
   name: String!
   useSalary: Boolean

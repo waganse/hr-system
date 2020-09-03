@@ -21,23 +21,11 @@ export const createEmployee = /* GraphQL */ `
       rate
       fixedRate
       commission
-      hoursWorked
       joinDate
       image {
         bucket
         region
         key
-      }
-      workHours {
-        items {
-          id
-          hour
-          workedOn
-          employeeId
-          createdAt
-          updatedAt
-        }
-        nextToken
       }
       createdAt
       updatedAt
@@ -63,23 +51,11 @@ export const updateEmployee = /* GraphQL */ `
       rate
       fixedRate
       commission
-      hoursWorked
       joinDate
       image {
         bucket
         region
         key
-      }
-      workHours {
-        items {
-          id
-          hour
-          workedOn
-          employeeId
-          createdAt
-          updatedAt
-        }
-        nextToken
       }
       createdAt
       updatedAt
@@ -105,38 +81,27 @@ export const deleteEmployee = /* GraphQL */ `
       rate
       fixedRate
       commission
-      hoursWorked
       joinDate
       image {
         bucket
         region
         key
       }
-      workHours {
-        items {
-          id
-          hour
-          workedOn
-          employeeId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
   }
 `;
-export const createWorkHour = /* GraphQL */ `
-  mutation CreateWorkHour(
-    $input: CreateWorkHourInput!
-    $condition: ModelWorkHourConditionInput
+export const createPayroll = /* GraphQL */ `
+  mutation CreatePayroll(
+    $input: CreatePayrollInput!
+    $condition: ModelPayrollConditionInput
   ) {
-    createWorkHour(input: $input, condition: $condition) {
+    createPayroll(input: $input, condition: $condition) {
       id
-      hour
-      workedOn
+      hoursWorked
+      bonus
+      workedMonthYear
       employeeId
       employee {
         id
@@ -152,15 +117,11 @@ export const createWorkHour = /* GraphQL */ `
         rate
         fixedRate
         commission
-        hoursWorked
         joinDate
         image {
           bucket
           region
           key
-        }
-        workHours {
-          nextToken
         }
         createdAt
         updatedAt
@@ -170,15 +131,16 @@ export const createWorkHour = /* GraphQL */ `
     }
   }
 `;
-export const updateWorkHour = /* GraphQL */ `
-  mutation UpdateWorkHour(
-    $input: UpdateWorkHourInput!
-    $condition: ModelWorkHourConditionInput
+export const updatePayroll = /* GraphQL */ `
+  mutation UpdatePayroll(
+    $input: UpdatePayrollInput!
+    $condition: ModelPayrollConditionInput
   ) {
-    updateWorkHour(input: $input, condition: $condition) {
+    updatePayroll(input: $input, condition: $condition) {
       id
-      hour
-      workedOn
+      hoursWorked
+      bonus
+      workedMonthYear
       employeeId
       employee {
         id
@@ -194,15 +156,11 @@ export const updateWorkHour = /* GraphQL */ `
         rate
         fixedRate
         commission
-        hoursWorked
         joinDate
         image {
           bucket
           region
           key
-        }
-        workHours {
-          nextToken
         }
         createdAt
         updatedAt
@@ -212,15 +170,16 @@ export const updateWorkHour = /* GraphQL */ `
     }
   }
 `;
-export const deleteWorkHour = /* GraphQL */ `
-  mutation DeleteWorkHour(
-    $input: DeleteWorkHourInput!
-    $condition: ModelWorkHourConditionInput
+export const deletePayroll = /* GraphQL */ `
+  mutation DeletePayroll(
+    $input: DeletePayrollInput!
+    $condition: ModelPayrollConditionInput
   ) {
-    deleteWorkHour(input: $input, condition: $condition) {
+    deletePayroll(input: $input, condition: $condition) {
       id
-      hour
-      workedOn
+      hoursWorked
+      bonus
+      workedMonthYear
       employeeId
       employee {
         id
@@ -236,15 +195,11 @@ export const deleteWorkHour = /* GraphQL */ `
         rate
         fixedRate
         commission
-        hoursWorked
         joinDate
         image {
           bucket
           region
           key
-        }
-        workHours {
-          nextToken
         }
         createdAt
         updatedAt

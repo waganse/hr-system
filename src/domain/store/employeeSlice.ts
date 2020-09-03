@@ -34,25 +34,11 @@ export const employeeSlice = createSlice({
       state.nextToken = action.payload.nextToken;
     },
     getOneEmployee: state => {
-      console.clear()
-      console.log('===================')
-      console.log('create', state)
-      console.log('===================')
-    },
-    searchManyEmployees: state => {
-      console.clear()
-      console.log('===================')
-      console.log('create', state)
-      console.log('===================')
     },
     createOneEmployee: (state, action: PayloadAction<EmployeeMaster>) => {
       state.items.push(action.payload);
     },
     updateOneEmployee: (state, action: PayloadAction<EmployeeMaster>) => {
-      console.clear()
-      console.log('===================')
-      console.log('update', state)
-      console.log('===================')
       state.items = state.items.map(item => {
         return item.id === action.payload.id ? action.payload : item;
       });
@@ -63,7 +49,7 @@ export const employeeSlice = createSlice({
   },
 });
 
-export const { getManyEmployees, getOneEmployee, searchManyEmployees, createOneEmployee, updateOneEmployee, deleteOneEmployee } = employeeSlice.actions;
+export const { getManyEmployees, getOneEmployee, createOneEmployee, updateOneEmployee, deleteOneEmployee } = employeeSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

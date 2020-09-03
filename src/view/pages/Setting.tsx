@@ -13,12 +13,10 @@ import {
   networkUpdateDepartment,
   networkDeleteDepartment
 } from '../../domain/network';
-import { DepartmentFetchParams, EmploymentTypeFetchParams } from '../../typings';
+import { FetchParams } from '../../typings';
 import { message, Tabs } from 'antd';
 import { MasterList } from '../components/master/MasterList';
 import { PageLayout } from '../Layout';
-
-type FetchParams = DepartmentFetchParams | EmploymentTypeFetchParams;
 
 export function Setting() {
   const departmentList = useSelector(selectDepartment);
@@ -69,14 +67,18 @@ export function Setting() {
 
   useEffect(() => {
     if (authState.isAuth) {
-      fetchHandler({});
+      fetchHandler('department', {});
+      fetchHandler('employmentType', {});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authState.isAuth]);
 
-  const fetchHandler = async (params: FetchParams) => {
-    const dispatcher = actionMap[selectedMaster].fetch.dispatch;
-    const networkAction = actionMap[selectedMaster].fetch.network;
+  const fetchHandler = async (key: string, params: FetchParams) => {
+console.log('===================');
+console.log(key);
+console.log('===================');
+    const dispatcher = actionMap[key].fetch.dispatch;
+    const networkAction = actionMap[key].fetch.network;
 
     dispatch(dispatcher(await networkAction(params)));
     setLoading(false);
@@ -108,11 +110,12 @@ export function Setting() {
 
   const onChangeTabHandler = (key: string) => {
     setSelectedMaster(key);
+    fetchHandler(key, {});
   }
 
   return (
     <PageLayout>
-      <Tabs defaultActiveKey="1" onChange={key => onChangeTabHandler(key)}>
+      <Tabs defaultActiveKey="department" onChange={key => onChangeTabHandler(key)}>
         <Tabs.TabPane tab="Departments" key="department">
           <MasterList
             title="Departments"

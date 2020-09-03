@@ -18,23 +18,11 @@ export const getEmployee = /* GraphQL */ `
       rate
       fixedRate
       commission
-      hoursWorked
       joinDate
       image {
         bucket
         region
         key
-      }
-      workHours {
-        items {
-          id
-          hour
-          workedOn
-          employeeId
-          createdAt
-          updatedAt
-        }
-        nextToken
       }
       createdAt
       updatedAt
@@ -62,15 +50,11 @@ export const listEmployees = /* GraphQL */ `
         rate
         fixedRate
         commission
-        hoursWorked
         joinDate
         image {
           bucket
           region
           key
-        }
-        workHours {
-          nextToken
         }
         createdAt
         updatedAt
@@ -79,12 +63,13 @@ export const listEmployees = /* GraphQL */ `
     }
   }
 `;
-export const getWorkHour = /* GraphQL */ `
-  query GetWorkHour($id: ID!) {
-    getWorkHour(id: $id) {
+export const getPayroll = /* GraphQL */ `
+  query GetPayroll($id: ID!) {
+    getPayroll(id: $id) {
       id
-      hour
-      workedOn
+      hoursWorked
+      bonus
+      workedMonthYear
       employeeId
       employee {
         id
@@ -100,15 +85,11 @@ export const getWorkHour = /* GraphQL */ `
         rate
         fixedRate
         commission
-        hoursWorked
         joinDate
         image {
           bucket
           region
           key
-        }
-        workHours {
-          nextToken
         }
         createdAt
         updatedAt
@@ -118,17 +99,18 @@ export const getWorkHour = /* GraphQL */ `
     }
   }
 `;
-export const listWorkHours = /* GraphQL */ `
-  query ListWorkHours(
-    $filter: ModelWorkHourFilterInput
+export const listPayrolls = /* GraphQL */ `
+  query ListPayrolls(
+    $filter: ModelPayrollFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listWorkHours(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listPayrolls(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        hour
-        workedOn
+        hoursWorked
+        bonus
+        workedMonthYear
         employeeId
         employee {
           id
@@ -144,7 +126,6 @@ export const listWorkHours = /* GraphQL */ `
           rate
           fixedRate
           commission
-          hoursWorked
           joinDate
           createdAt
           updatedAt
@@ -215,148 +196,6 @@ export const listEmploymentTypes = /* GraphQL */ `
         updatedAt
       }
       nextToken
-    }
-  }
-`;
-export const searchEmployees = /* GraphQL */ `
-  query SearchEmployees(
-    $filter: SearchableEmployeeFilterInput
-    $sort: SearchableEmployeeSortInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    searchEmployees(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        fullName
-        email
-        designation
-        department
-        employmentType
-        age
-        address
-        contact
-        salary
-        rate
-        fixedRate
-        commission
-        hoursWorked
-        joinDate
-        image {
-          bucket
-          region
-          key
-        }
-        workHours {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-      total
-    }
-  }
-`;
-export const searchWorkHours = /* GraphQL */ `
-  query SearchWorkHours(
-    $filter: SearchableWorkHourFilterInput
-    $sort: SearchableWorkHourSortInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    searchWorkHours(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        hour
-        workedOn
-        employeeId
-        employee {
-          id
-          fullName
-          email
-          designation
-          department
-          employmentType
-          age
-          address
-          contact
-          salary
-          rate
-          fixedRate
-          commission
-          hoursWorked
-          joinDate
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-      total
-    }
-  }
-`;
-export const searchDepartments = /* GraphQL */ `
-  query SearchDepartments(
-    $filter: SearchableDepartmentFilterInput
-    $sort: SearchableDepartmentSortInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    searchDepartments(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      nextToken
-      total
-    }
-  }
-`;
-export const searchEmploymentTypes = /* GraphQL */ `
-  query SearchEmploymentTypes(
-    $filter: SearchableEmploymentTypeFilterInput
-    $sort: SearchableEmploymentTypeSortInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    searchEmploymentTypes(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        useSalary
-        useRate
-        useFixedRate
-        useCommission
-        createdAt
-        updatedAt
-      }
-      nextToken
-      total
     }
   }
 `;

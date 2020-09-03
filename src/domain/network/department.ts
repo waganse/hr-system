@@ -1,10 +1,10 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import { createDepartment, updateDepartment, deleteDepartment } from '../../graphql/mutations';
-import { DepartmentMaster, DepartmentFetchParams, DeleteParams } from '../../typings';
+import { DepartmentMaster, FetchParams, DeleteParams } from '../../typings';
 import { listDepartments } from '../../graphql/queries';
 import { message } from 'antd';
 
-export const networkFetchDepartmentList = async ({ filter, limit = 100, nextToken }: DepartmentFetchParams) => {
+export const networkFetchDepartmentList = async ({ filter, limit = 100, nextToken }: FetchParams) => {
     try {
         const result: any = await API.graphql(graphqlOperation(listDepartments, { filter, limit, nextToken }));
 

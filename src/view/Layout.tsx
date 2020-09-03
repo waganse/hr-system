@@ -3,6 +3,7 @@ import { useHistory, NavLink } from 'react-router-dom';
 import { networkSignOut } from '../domain/network';
 import { Layout, Menu, Row, Col, Button, message } from 'antd';
 import {
+  MoneyCollectOutlined,
   PieChartOutlined,
   UserOutlined,
   SettingOutlined,
@@ -61,6 +62,9 @@ export function PageLayout(props: any) {
           >
             <Menu.Item key="employee" icon={<UserOutlined />} style={{ marginTop: 0 }}>
               Employee List
+            </Menu.Item>
+            <Menu.Item key="payroll" icon={<MoneyCollectOutlined />}>
+              Payroll
             </Menu.Item>
             <Menu.Item key="report" icon={<PieChartOutlined />}>
               Report

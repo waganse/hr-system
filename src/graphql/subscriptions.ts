@@ -18,23 +18,11 @@ export const onCreateEmployee = /* GraphQL */ `
       rate
       fixedRate
       commission
-      hoursWorked
       joinDate
       image {
         bucket
         region
         key
-      }
-      workHours {
-        items {
-          id
-          hour
-          workedOn
-          employeeId
-          createdAt
-          updatedAt
-        }
-        nextToken
       }
       createdAt
       updatedAt
@@ -57,23 +45,11 @@ export const onUpdateEmployee = /* GraphQL */ `
       rate
       fixedRate
       commission
-      hoursWorked
       joinDate
       image {
         bucket
         region
         key
-      }
-      workHours {
-        items {
-          id
-          hour
-          workedOn
-          employeeId
-          createdAt
-          updatedAt
-        }
-        nextToken
       }
       createdAt
       updatedAt
@@ -96,35 +72,24 @@ export const onDeleteEmployee = /* GraphQL */ `
       rate
       fixedRate
       commission
-      hoursWorked
       joinDate
       image {
         bucket
         region
         key
       }
-      workHours {
-        items {
-          id
-          hour
-          workedOn
-          employeeId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
   }
 `;
-export const onCreateWorkHour = /* GraphQL */ `
-  subscription OnCreateWorkHour {
-    onCreateWorkHour {
+export const onCreatePayroll = /* GraphQL */ `
+  subscription OnCreatePayroll {
+    onCreatePayroll {
       id
-      hour
-      workedOn
+      hoursWorked
+      bonus
+      workedMonthYear
       employeeId
       employee {
         id
@@ -140,15 +105,11 @@ export const onCreateWorkHour = /* GraphQL */ `
         rate
         fixedRate
         commission
-        hoursWorked
         joinDate
         image {
           bucket
           region
           key
-        }
-        workHours {
-          nextToken
         }
         createdAt
         updatedAt
@@ -158,12 +119,13 @@ export const onCreateWorkHour = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateWorkHour = /* GraphQL */ `
-  subscription OnUpdateWorkHour {
-    onUpdateWorkHour {
+export const onUpdatePayroll = /* GraphQL */ `
+  subscription OnUpdatePayroll {
+    onUpdatePayroll {
       id
-      hour
-      workedOn
+      hoursWorked
+      bonus
+      workedMonthYear
       employeeId
       employee {
         id
@@ -179,15 +141,11 @@ export const onUpdateWorkHour = /* GraphQL */ `
         rate
         fixedRate
         commission
-        hoursWorked
         joinDate
         image {
           bucket
           region
           key
-        }
-        workHours {
-          nextToken
         }
         createdAt
         updatedAt
@@ -197,12 +155,13 @@ export const onUpdateWorkHour = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteWorkHour = /* GraphQL */ `
-  subscription OnDeleteWorkHour {
-    onDeleteWorkHour {
+export const onDeletePayroll = /* GraphQL */ `
+  subscription OnDeletePayroll {
+    onDeletePayroll {
       id
-      hour
-      workedOn
+      hoursWorked
+      bonus
+      workedMonthYear
       employeeId
       employee {
         id
@@ -218,15 +177,11 @@ export const onDeleteWorkHour = /* GraphQL */ `
         rate
         fixedRate
         commission
-        hoursWorked
         joinDate
         image {
           bucket
           region
           key
-        }
-        workHours {
-          nextToken
         }
         createdAt
         updatedAt

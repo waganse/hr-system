@@ -16,7 +16,6 @@ export type CreateEmployeeInput = {
   rate?: number | null,
   fixedRate?: number | null,
   commission?: number | null,
-  hoursWorked?: number | null,
   joinDate?: string | null,
   image?: S3ObjectInput | null,
 };
@@ -40,7 +39,6 @@ export type ModelEmployeeConditionInput = {
   rate?: ModelFloatInput | null,
   fixedRate?: ModelFloatInput | null,
   commission?: ModelFloatInput | null,
-  hoursWorked?: ModelFloatInput | null,
   joinDate?: ModelStringInput | null,
   and?: Array< ModelEmployeeConditionInput | null > | null,
   or?: Array< ModelEmployeeConditionInput | null > | null,
@@ -125,7 +123,6 @@ export type UpdateEmployeeInput = {
   rate?: number | null,
   fixedRate?: number | null,
   commission?: number | null,
-  hoursWorked?: number | null,
   joinDate?: string | null,
   image?: S3ObjectInput | null,
 };
@@ -134,20 +131,22 @@ export type DeleteEmployeeInput = {
   id?: string | null,
 };
 
-export type CreateWorkHourInput = {
+export type CreatePayrollInput = {
   id?: string | null,
-  hour: number,
-  workedOn: string,
+  hoursWorked: number,
+  bonus: number,
+  workedMonthYear?: string | null,
   employeeId: string,
 };
 
-export type ModelWorkHourConditionInput = {
-  hour?: ModelFloatInput | null,
-  workedOn?: ModelStringInput | null,
+export type ModelPayrollConditionInput = {
+  hoursWorked?: ModelFloatInput | null,
+  bonus?: ModelFloatInput | null,
+  workedMonthYear?: ModelStringInput | null,
   employeeId?: ModelIDInput | null,
-  and?: Array< ModelWorkHourConditionInput | null > | null,
-  or?: Array< ModelWorkHourConditionInput | null > | null,
-  not?: ModelWorkHourConditionInput | null,
+  and?: Array< ModelPayrollConditionInput | null > | null,
+  or?: Array< ModelPayrollConditionInput | null > | null,
+  not?: ModelPayrollConditionInput | null,
 };
 
 export type ModelIDInput = {
@@ -166,14 +165,15 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type UpdateWorkHourInput = {
+export type UpdatePayrollInput = {
   id: string,
-  hour?: number | null,
-  workedOn?: string | null,
+  hoursWorked?: number | null,
+  bonus?: number | null,
+  workedMonthYear?: string | null,
   employeeId?: string | null,
 };
 
-export type DeleteWorkHourInput = {
+export type DeletePayrollInput = {
   id?: string | null,
 };
 
@@ -252,21 +252,21 @@ export type ModelEmployeeFilterInput = {
   rate?: ModelFloatInput | null,
   fixedRate?: ModelFloatInput | null,
   commission?: ModelFloatInput | null,
-  hoursWorked?: ModelFloatInput | null,
   joinDate?: ModelStringInput | null,
   and?: Array< ModelEmployeeFilterInput | null > | null,
   or?: Array< ModelEmployeeFilterInput | null > | null,
   not?: ModelEmployeeFilterInput | null,
 };
 
-export type ModelWorkHourFilterInput = {
+export type ModelPayrollFilterInput = {
   id?: ModelIDInput | null,
-  hour?: ModelFloatInput | null,
-  workedOn?: ModelStringInput | null,
+  hoursWorked?: ModelFloatInput | null,
+  bonus?: ModelFloatInput | null,
+  workedMonthYear?: ModelStringInput | null,
   employeeId?: ModelIDInput | null,
-  and?: Array< ModelWorkHourFilterInput | null > | null,
-  or?: Array< ModelWorkHourFilterInput | null > | null,
-  not?: ModelWorkHourFilterInput | null,
+  and?: Array< ModelPayrollFilterInput | null > | null,
+  or?: Array< ModelPayrollFilterInput | null > | null,
+  not?: ModelPayrollFilterInput | null,
 };
 
 export type ModelDepartmentFilterInput = {
@@ -289,183 +289,6 @@ export type ModelEmploymentTypeFilterInput = {
   not?: ModelEmploymentTypeFilterInput | null,
 };
 
-export type SearchableEmployeeFilterInput = {
-  id?: SearchableIDFilterInput | null,
-  fullName?: SearchableStringFilterInput | null,
-  email?: SearchableStringFilterInput | null,
-  designation?: SearchableStringFilterInput | null,
-  department?: SearchableStringFilterInput | null,
-  employmentType?: SearchableStringFilterInput | null,
-  age?: SearchableIntFilterInput | null,
-  address?: SearchableStringFilterInput | null,
-  contact?: SearchableStringFilterInput | null,
-  salary?: SearchableFloatFilterInput | null,
-  rate?: SearchableFloatFilterInput | null,
-  fixedRate?: SearchableFloatFilterInput | null,
-  commission?: SearchableFloatFilterInput | null,
-  hoursWorked?: SearchableFloatFilterInput | null,
-  joinDate?: SearchableStringFilterInput | null,
-  and?: Array< SearchableEmployeeFilterInput | null > | null,
-  or?: Array< SearchableEmployeeFilterInput | null > | null,
-  not?: SearchableEmployeeFilterInput | null,
-};
-
-export type SearchableIDFilterInput = {
-  ne?: string | null,
-  gt?: string | null,
-  lt?: string | null,
-  gte?: string | null,
-  lte?: string | null,
-  eq?: string | null,
-  match?: string | null,
-  matchPhrase?: string | null,
-  matchPhrasePrefix?: string | null,
-  multiMatch?: string | null,
-  exists?: boolean | null,
-  wildcard?: string | null,
-  regexp?: string | null,
-};
-
-export type SearchableStringFilterInput = {
-  ne?: string | null,
-  gt?: string | null,
-  lt?: string | null,
-  gte?: string | null,
-  lte?: string | null,
-  eq?: string | null,
-  match?: string | null,
-  matchPhrase?: string | null,
-  matchPhrasePrefix?: string | null,
-  multiMatch?: string | null,
-  exists?: boolean | null,
-  wildcard?: string | null,
-  regexp?: string | null,
-};
-
-export type SearchableIntFilterInput = {
-  ne?: number | null,
-  gt?: number | null,
-  lt?: number | null,
-  gte?: number | null,
-  lte?: number | null,
-  eq?: number | null,
-  range?: Array< number | null > | null,
-};
-
-export type SearchableFloatFilterInput = {
-  ne?: number | null,
-  gt?: number | null,
-  lt?: number | null,
-  gte?: number | null,
-  lte?: number | null,
-  eq?: number | null,
-  range?: Array< number | null > | null,
-};
-
-export type SearchableEmployeeSortInput = {
-  field?: SearchableEmployeeSortableFields | null,
-  direction?: SearchableSortDirection | null,
-};
-
-export enum SearchableEmployeeSortableFields {
-  id = "id",
-  fullName = "fullName",
-  email = "email",
-  designation = "designation",
-  department = "department",
-  employmentType = "employmentType",
-  age = "age",
-  address = "address",
-  contact = "contact",
-  salary = "salary",
-  rate = "rate",
-  fixedRate = "fixedRate",
-  commission = "commission",
-  hoursWorked = "hoursWorked",
-  joinDate = "joinDate",
-}
-
-
-export enum SearchableSortDirection {
-  asc = "asc",
-  desc = "desc",
-}
-
-
-export type SearchableWorkHourFilterInput = {
-  id?: SearchableIDFilterInput | null,
-  hour?: SearchableFloatFilterInput | null,
-  workedOn?: SearchableStringFilterInput | null,
-  employeeId?: SearchableIDFilterInput | null,
-  and?: Array< SearchableWorkHourFilterInput | null > | null,
-  or?: Array< SearchableWorkHourFilterInput | null > | null,
-  not?: SearchableWorkHourFilterInput | null,
-};
-
-export type SearchableWorkHourSortInput = {
-  field?: SearchableWorkHourSortableFields | null,
-  direction?: SearchableSortDirection | null,
-};
-
-export enum SearchableWorkHourSortableFields {
-  id = "id",
-  hour = "hour",
-  workedOn = "workedOn",
-  employeeId = "employeeId",
-}
-
-
-export type SearchableDepartmentFilterInput = {
-  id?: SearchableIDFilterInput | null,
-  name?: SearchableStringFilterInput | null,
-  and?: Array< SearchableDepartmentFilterInput | null > | null,
-  or?: Array< SearchableDepartmentFilterInput | null > | null,
-  not?: SearchableDepartmentFilterInput | null,
-};
-
-export type SearchableDepartmentSortInput = {
-  field?: SearchableDepartmentSortableFields | null,
-  direction?: SearchableSortDirection | null,
-};
-
-export enum SearchableDepartmentSortableFields {
-  id = "id",
-  name = "name",
-}
-
-
-export type SearchableEmploymentTypeFilterInput = {
-  id?: SearchableIDFilterInput | null,
-  name?: SearchableStringFilterInput | null,
-  useSalary?: SearchableBooleanFilterInput | null,
-  useRate?: SearchableBooleanFilterInput | null,
-  useFixedRate?: SearchableBooleanFilterInput | null,
-  useCommission?: SearchableBooleanFilterInput | null,
-  and?: Array< SearchableEmploymentTypeFilterInput | null > | null,
-  or?: Array< SearchableEmploymentTypeFilterInput | null > | null,
-  not?: SearchableEmploymentTypeFilterInput | null,
-};
-
-export type SearchableBooleanFilterInput = {
-  eq?: boolean | null,
-  ne?: boolean | null,
-};
-
-export type SearchableEmploymentTypeSortInput = {
-  field?: SearchableEmploymentTypeSortableFields | null,
-  direction?: SearchableSortDirection | null,
-};
-
-export enum SearchableEmploymentTypeSortableFields {
-  id = "id",
-  name = "name",
-  useSalary = "useSalary",
-  useRate = "useRate",
-  useFixedRate = "useFixedRate",
-  useCommission = "useCommission",
-}
-
-
 export type CreateEmployeeMutationVariables = {
   input: CreateEmployeeInput,
   condition?: ModelEmployeeConditionInput | null,
@@ -487,26 +310,12 @@ export type CreateEmployeeMutation = {
     rate: number | null,
     fixedRate: number | null,
     commission: number | null,
-    hoursWorked: number | null,
     joinDate: string | null,
     image:  {
       __typename: "S3Object",
       bucket: string,
       region: string,
       key: string,
-    } | null,
-    workHours:  {
-      __typename: "ModelWorkHourConnection",
-      items:  Array< {
-        __typename: "WorkHour",
-        id: string,
-        hour: number,
-        workedOn: string,
-        employeeId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -534,26 +343,12 @@ export type UpdateEmployeeMutation = {
     rate: number | null,
     fixedRate: number | null,
     commission: number | null,
-    hoursWorked: number | null,
     joinDate: string | null,
     image:  {
       __typename: "S3Object",
       bucket: string,
       region: string,
       key: string,
-    } | null,
-    workHours:  {
-      __typename: "ModelWorkHourConnection",
-      items:  Array< {
-        __typename: "WorkHour",
-        id: string,
-        hour: number,
-        workedOn: string,
-        employeeId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -581,7 +376,6 @@ export type DeleteEmployeeMutation = {
     rate: number | null,
     fixedRate: number | null,
     commission: number | null,
-    hoursWorked: number | null,
     joinDate: string | null,
     image:  {
       __typename: "S3Object",
@@ -589,35 +383,23 @@ export type DeleteEmployeeMutation = {
       region: string,
       key: string,
     } | null,
-    workHours:  {
-      __typename: "ModelWorkHourConnection",
-      items:  Array< {
-        __typename: "WorkHour",
-        id: string,
-        hour: number,
-        workedOn: string,
-        employeeId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type CreateWorkHourMutationVariables = {
-  input: CreateWorkHourInput,
-  condition?: ModelWorkHourConditionInput | null,
+export type CreatePayrollMutationVariables = {
+  input: CreatePayrollInput,
+  condition?: ModelPayrollConditionInput | null,
 };
 
-export type CreateWorkHourMutation = {
-  createWorkHour:  {
-    __typename: "WorkHour",
+export type CreatePayrollMutation = {
+  createPayroll:  {
+    __typename: "Payroll",
     id: string,
-    hour: number,
-    workedOn: string,
+    hoursWorked: number,
+    bonus: number,
+    workedMonthYear: string | null,
     employeeId: string,
     employee:  {
       __typename: "Employee",
@@ -634,17 +416,12 @@ export type CreateWorkHourMutation = {
       rate: number | null,
       fixedRate: number | null,
       commission: number | null,
-      hoursWorked: number | null,
       joinDate: string | null,
       image:  {
         __typename: "S3Object",
         bucket: string,
         region: string,
         key: string,
-      } | null,
-      workHours:  {
-        __typename: "ModelWorkHourConnection",
-        nextToken: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -654,17 +431,18 @@ export type CreateWorkHourMutation = {
   } | null,
 };
 
-export type UpdateWorkHourMutationVariables = {
-  input: UpdateWorkHourInput,
-  condition?: ModelWorkHourConditionInput | null,
+export type UpdatePayrollMutationVariables = {
+  input: UpdatePayrollInput,
+  condition?: ModelPayrollConditionInput | null,
 };
 
-export type UpdateWorkHourMutation = {
-  updateWorkHour:  {
-    __typename: "WorkHour",
+export type UpdatePayrollMutation = {
+  updatePayroll:  {
+    __typename: "Payroll",
     id: string,
-    hour: number,
-    workedOn: string,
+    hoursWorked: number,
+    bonus: number,
+    workedMonthYear: string | null,
     employeeId: string,
     employee:  {
       __typename: "Employee",
@@ -681,17 +459,12 @@ export type UpdateWorkHourMutation = {
       rate: number | null,
       fixedRate: number | null,
       commission: number | null,
-      hoursWorked: number | null,
       joinDate: string | null,
       image:  {
         __typename: "S3Object",
         bucket: string,
         region: string,
         key: string,
-      } | null,
-      workHours:  {
-        __typename: "ModelWorkHourConnection",
-        nextToken: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -701,17 +474,18 @@ export type UpdateWorkHourMutation = {
   } | null,
 };
 
-export type DeleteWorkHourMutationVariables = {
-  input: DeleteWorkHourInput,
-  condition?: ModelWorkHourConditionInput | null,
+export type DeletePayrollMutationVariables = {
+  input: DeletePayrollInput,
+  condition?: ModelPayrollConditionInput | null,
 };
 
-export type DeleteWorkHourMutation = {
-  deleteWorkHour:  {
-    __typename: "WorkHour",
+export type DeletePayrollMutation = {
+  deletePayroll:  {
+    __typename: "Payroll",
     id: string,
-    hour: number,
-    workedOn: string,
+    hoursWorked: number,
+    bonus: number,
+    workedMonthYear: string | null,
     employeeId: string,
     employee:  {
       __typename: "Employee",
@@ -728,17 +502,12 @@ export type DeleteWorkHourMutation = {
       rate: number | null,
       fixedRate: number | null,
       commission: number | null,
-      hoursWorked: number | null,
       joinDate: string | null,
       image:  {
         __typename: "S3Object",
         bucket: string,
         region: string,
         key: string,
-      } | null,
-      workHours:  {
-        __typename: "ModelWorkHourConnection",
-        nextToken: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -870,26 +639,12 @@ export type GetEmployeeQuery = {
     rate: number | null,
     fixedRate: number | null,
     commission: number | null,
-    hoursWorked: number | null,
     joinDate: string | null,
     image:  {
       __typename: "S3Object",
       bucket: string,
       region: string,
       key: string,
-    } | null,
-    workHours:  {
-      __typename: "ModelWorkHourConnection",
-      items:  Array< {
-        __typename: "WorkHour",
-        id: string,
-        hour: number,
-        workedOn: string,
-        employeeId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -920,17 +675,12 @@ export type ListEmployeesQuery = {
       rate: number | null,
       fixedRate: number | null,
       commission: number | null,
-      hoursWorked: number | null,
       joinDate: string | null,
       image:  {
         __typename: "S3Object",
         bucket: string,
         region: string,
         key: string,
-      } | null,
-      workHours:  {
-        __typename: "ModelWorkHourConnection",
-        nextToken: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -939,16 +689,17 @@ export type ListEmployeesQuery = {
   } | null,
 };
 
-export type GetWorkHourQueryVariables = {
+export type GetPayrollQueryVariables = {
   id: string,
 };
 
-export type GetWorkHourQuery = {
-  getWorkHour:  {
-    __typename: "WorkHour",
+export type GetPayrollQuery = {
+  getPayroll:  {
+    __typename: "Payroll",
     id: string,
-    hour: number,
-    workedOn: string,
+    hoursWorked: number,
+    bonus: number,
+    workedMonthYear: string | null,
     employeeId: string,
     employee:  {
       __typename: "Employee",
@@ -965,17 +716,12 @@ export type GetWorkHourQuery = {
       rate: number | null,
       fixedRate: number | null,
       commission: number | null,
-      hoursWorked: number | null,
       joinDate: string | null,
       image:  {
         __typename: "S3Object",
         bucket: string,
         region: string,
         key: string,
-      } | null,
-      workHours:  {
-        __typename: "ModelWorkHourConnection",
-        nextToken: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -985,20 +731,21 @@ export type GetWorkHourQuery = {
   } | null,
 };
 
-export type ListWorkHoursQueryVariables = {
-  filter?: ModelWorkHourFilterInput | null,
+export type ListPayrollsQueryVariables = {
+  filter?: ModelPayrollFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListWorkHoursQuery = {
-  listWorkHours:  {
-    __typename: "ModelWorkHourConnection",
+export type ListPayrollsQuery = {
+  listPayrolls:  {
+    __typename: "ModelPayrollConnection",
     items:  Array< {
-      __typename: "WorkHour",
+      __typename: "Payroll",
       id: string,
-      hour: number,
-      workedOn: string,
+      hoursWorked: number,
+      bonus: number,
+      workedMonthYear: string | null,
       employeeId: string,
       employee:  {
         __typename: "Employee",
@@ -1015,7 +762,6 @@ export type ListWorkHoursQuery = {
         rate: number | null,
         fixedRate: number | null,
         commission: number | null,
-        hoursWorked: number | null,
         joinDate: string | null,
         createdAt: string,
         updatedAt: string,
@@ -1103,143 +849,6 @@ export type ListEmploymentTypesQuery = {
   } | null,
 };
 
-export type SearchEmployeesQueryVariables = {
-  filter?: SearchableEmployeeFilterInput | null,
-  sort?: SearchableEmployeeSortInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type SearchEmployeesQuery = {
-  searchEmployees:  {
-    __typename: "SearchableEmployeeConnection",
-    items:  Array< {
-      __typename: "Employee",
-      id: string,
-      fullName: string,
-      email: string,
-      designation: string,
-      department: string,
-      employmentType: string,
-      age: number | null,
-      address: string | null,
-      contact: string | null,
-      salary: number | null,
-      rate: number | null,
-      fixedRate: number | null,
-      commission: number | null,
-      hoursWorked: number | null,
-      joinDate: string | null,
-      image:  {
-        __typename: "S3Object",
-        bucket: string,
-        region: string,
-        key: string,
-      } | null,
-      workHours:  {
-        __typename: "ModelWorkHourConnection",
-        nextToken: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-    total: number | null,
-  } | null,
-};
-
-export type SearchWorkHoursQueryVariables = {
-  filter?: SearchableWorkHourFilterInput | null,
-  sort?: SearchableWorkHourSortInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type SearchWorkHoursQuery = {
-  searchWorkHours:  {
-    __typename: "SearchableWorkHourConnection",
-    items:  Array< {
-      __typename: "WorkHour",
-      id: string,
-      hour: number,
-      workedOn: string,
-      employeeId: string,
-      employee:  {
-        __typename: "Employee",
-        id: string,
-        fullName: string,
-        email: string,
-        designation: string,
-        department: string,
-        employmentType: string,
-        age: number | null,
-        address: string | null,
-        contact: string | null,
-        salary: number | null,
-        rate: number | null,
-        fixedRate: number | null,
-        commission: number | null,
-        hoursWorked: number | null,
-        joinDate: string | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-    total: number | null,
-  } | null,
-};
-
-export type SearchDepartmentsQueryVariables = {
-  filter?: SearchableDepartmentFilterInput | null,
-  sort?: SearchableDepartmentSortInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type SearchDepartmentsQuery = {
-  searchDepartments:  {
-    __typename: "SearchableDepartmentConnection",
-    items:  Array< {
-      __typename: "Department",
-      id: string,
-      name: string,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-    total: number | null,
-  } | null,
-};
-
-export type SearchEmploymentTypesQueryVariables = {
-  filter?: SearchableEmploymentTypeFilterInput | null,
-  sort?: SearchableEmploymentTypeSortInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type SearchEmploymentTypesQuery = {
-  searchEmploymentTypes:  {
-    __typename: "SearchableEmploymentTypeConnection",
-    items:  Array< {
-      __typename: "EmploymentType",
-      id: string,
-      name: string,
-      useSalary: boolean | null,
-      useRate: boolean | null,
-      useFixedRate: boolean | null,
-      useCommission: boolean | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-    total: number | null,
-  } | null,
-};
-
 export type OnCreateEmployeeSubscription = {
   onCreateEmployee:  {
     __typename: "Employee",
@@ -1256,26 +865,12 @@ export type OnCreateEmployeeSubscription = {
     rate: number | null,
     fixedRate: number | null,
     commission: number | null,
-    hoursWorked: number | null,
     joinDate: string | null,
     image:  {
       __typename: "S3Object",
       bucket: string,
       region: string,
       key: string,
-    } | null,
-    workHours:  {
-      __typename: "ModelWorkHourConnection",
-      items:  Array< {
-        __typename: "WorkHour",
-        id: string,
-        hour: number,
-        workedOn: string,
-        employeeId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1298,26 +893,12 @@ export type OnUpdateEmployeeSubscription = {
     rate: number | null,
     fixedRate: number | null,
     commission: number | null,
-    hoursWorked: number | null,
     joinDate: string | null,
     image:  {
       __typename: "S3Object",
       bucket: string,
       region: string,
       key: string,
-    } | null,
-    workHours:  {
-      __typename: "ModelWorkHourConnection",
-      items:  Array< {
-        __typename: "WorkHour",
-        id: string,
-        hour: number,
-        workedOn: string,
-        employeeId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1340,7 +921,6 @@ export type OnDeleteEmployeeSubscription = {
     rate: number | null,
     fixedRate: number | null,
     commission: number | null,
-    hoursWorked: number | null,
     joinDate: string | null,
     image:  {
       __typename: "S3Object",
@@ -1348,30 +928,18 @@ export type OnDeleteEmployeeSubscription = {
       region: string,
       key: string,
     } | null,
-    workHours:  {
-      __typename: "ModelWorkHourConnection",
-      items:  Array< {
-        __typename: "WorkHour",
-        id: string,
-        hour: number,
-        workedOn: string,
-        employeeId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnCreateWorkHourSubscription = {
-  onCreateWorkHour:  {
-    __typename: "WorkHour",
+export type OnCreatePayrollSubscription = {
+  onCreatePayroll:  {
+    __typename: "Payroll",
     id: string,
-    hour: number,
-    workedOn: string,
+    hoursWorked: number,
+    bonus: number,
+    workedMonthYear: string | null,
     employeeId: string,
     employee:  {
       __typename: "Employee",
@@ -1388,17 +956,12 @@ export type OnCreateWorkHourSubscription = {
       rate: number | null,
       fixedRate: number | null,
       commission: number | null,
-      hoursWorked: number | null,
       joinDate: string | null,
       image:  {
         __typename: "S3Object",
         bucket: string,
         region: string,
         key: string,
-      } | null,
-      workHours:  {
-        __typename: "ModelWorkHourConnection",
-        nextToken: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1408,12 +971,13 @@ export type OnCreateWorkHourSubscription = {
   } | null,
 };
 
-export type OnUpdateWorkHourSubscription = {
-  onUpdateWorkHour:  {
-    __typename: "WorkHour",
+export type OnUpdatePayrollSubscription = {
+  onUpdatePayroll:  {
+    __typename: "Payroll",
     id: string,
-    hour: number,
-    workedOn: string,
+    hoursWorked: number,
+    bonus: number,
+    workedMonthYear: string | null,
     employeeId: string,
     employee:  {
       __typename: "Employee",
@@ -1430,17 +994,12 @@ export type OnUpdateWorkHourSubscription = {
       rate: number | null,
       fixedRate: number | null,
       commission: number | null,
-      hoursWorked: number | null,
       joinDate: string | null,
       image:  {
         __typename: "S3Object",
         bucket: string,
         region: string,
         key: string,
-      } | null,
-      workHours:  {
-        __typename: "ModelWorkHourConnection",
-        nextToken: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1450,12 +1009,13 @@ export type OnUpdateWorkHourSubscription = {
   } | null,
 };
 
-export type OnDeleteWorkHourSubscription = {
-  onDeleteWorkHour:  {
-    __typename: "WorkHour",
+export type OnDeletePayrollSubscription = {
+  onDeletePayroll:  {
+    __typename: "Payroll",
     id: string,
-    hour: number,
-    workedOn: string,
+    hoursWorked: number,
+    bonus: number,
+    workedMonthYear: string | null,
     employeeId: string,
     employee:  {
       __typename: "Employee",
@@ -1472,17 +1032,12 @@ export type OnDeleteWorkHourSubscription = {
       rate: number | null,
       fixedRate: number | null,
       commission: number | null,
-      hoursWorked: number | null,
       joinDate: string | null,
       image:  {
         __typename: "S3Object",
         bucket: string,
         region: string,
         key: string,
-      } | null,
-      workHours:  {
-        __typename: "ModelWorkHourConnection",
-        nextToken: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { DepartmentMaster, EmploymentTypeMaster, TableColumn } from '../../../typings';
 import { Table, Space, Popconfirm, Button, Row, Col } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { RegisterForm } from '../../components/master/RegisterForm'
+import { RegisterForm } from '../../components/common/RegisterForm'
 
 type MasterData = DepartmentMaster | EmploymentTypeMaster;
 
@@ -113,7 +113,7 @@ export function MasterList({
           ],
           rules: [{ required: true, message: 'Please choose item' }],
           placeholder: 'Please choose item',
-          span: 12,
+          span: 24,
         },
         {
           label: 'Rate',
@@ -125,7 +125,7 @@ export function MasterList({
           ],
           rules: [{ required: true, message: 'Please choose item' }],
           placeholder: 'Please choose item',
-          span: 12,
+          span: 24,
         },
         {
           label: 'Fixed Rate',
@@ -137,7 +137,7 @@ export function MasterList({
           ],
           rules: [{ required: true, message: 'Please choose item' }],
           placeholder: 'Please choose item',
-          span: 12,
+          span: 24,
         },
         {
           label: 'Commission',
@@ -149,7 +149,7 @@ export function MasterList({
           ],
           rules: [{ required: true, message: 'Please choose item' }],
           placeholder: 'Please choose item',
-          span: 12,
+          span: 24,
         },
       ]
     }
@@ -159,7 +159,7 @@ export function MasterList({
     {
       title: 'Action',
       key: 'operation',
-      width: 100,
+      width: 85,
       render: (text: string, record: MasterData) => (
         <Space size="middle">
           <Button type="primary" shape="circle" icon={<EditOutlined />} size="small" onClick={() => onClickEditHandler(record.id as string)} />
@@ -183,6 +183,10 @@ export function MasterList({
     setIsNew(false);
 
     const targetItem = _.cloneDeep(itemList.filter(item => item.id === id)[0]);
+    console.clear();
+console.log('===================');
+console.log(targetItem);
+console.log('===================');
     setSelectedItem(targetItem);
   }
 
