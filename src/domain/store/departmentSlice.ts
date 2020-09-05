@@ -21,25 +21,13 @@ export const departmentSlice = createSlice({
       state.nextToken = action.payload.nextToken;
     },
     getOneDepartment: state => {
-      console.clear()
-      console.log('===================')
-      console.log('create', state)
-      console.log('===================')
     },
     searchManyDepartments: state => {
-      console.clear()
-      console.log('===================')
-      console.log('create', state)
-      console.log('===================')
     },
     createOneDepartment: (state, action: PayloadAction<DepartmentMaster>) => {
       state.items.push(action.payload);
     },
     updateOneDepartment: (state, action: PayloadAction<DepartmentMaster>) => {
-      console.clear()
-      console.log('===================')
-      console.log('update', state)
-      console.log('===================')
       state.items = state.items.map(item => {
         return item.id === action.payload.id ? action.payload : item;
       });

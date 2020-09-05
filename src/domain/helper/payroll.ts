@@ -15,10 +15,6 @@ export const validatePayrollInfo = async (employeeId: string, targetMonthYear: s
     ]
   };
 
-  console.log('VALID===================');
-  console.log(filter, employeeId);
-  console.log('===================');
-
   const result = await networkFetchPayrollList({ filter });
 
   if (result.items?.length) {
@@ -32,9 +28,6 @@ export const validatePayrollInfo = async (employeeId: string, targetMonthYear: s
 export const getTotalWage = (employee: EmployeeMaster, payroll: any) => {
   let totalWage = 0;
 
-console.log('===================');
-console.log(employee, payroll);
-console.log('===================');
   const salary = employee?.salary as number || 0;
   const rate = employee?.rate as number || 0;
   const fixedRate = employee?.fixedRate as number || 0;

@@ -26,25 +26,13 @@ export const employmentTypeSlice = createSlice({
       state.nextToken = action.payload.nextToken;
     },
     getOneEmploymentType: state => {
-      console.clear()
-      console.log('===================')
-      console.log('create', state)
-      console.log('===================')
     },
     searchManyEmploymentTypes: state => {
-      console.clear()
-      console.log('===================')
-      console.log('create', state)
-      console.log('===================')
     },
     createOneEmploymentType: (state, action: PayloadAction<EmploymentTypeMaster>) => {
       state.items.push(action.payload);
     },
     updateOneEmploymentType: (state, action: PayloadAction<EmploymentTypeMaster>) => {
-      console.clear()
-      console.log('===================')
-      console.log('update', state)
-      console.log('===================')
       state.items = state.items.map(item => {
         return item.id === action.payload.id ? action.payload : item;
       });

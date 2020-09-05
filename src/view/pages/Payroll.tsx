@@ -41,7 +41,6 @@ export function Payroll(props: any) {
   const [payrollObj, setPayrollObj] = useState({});
   const [dataSource, setDataSource] = useState([] as any);
   const [loading, setLoading] = useState(true);
-  const DATE_FORMAT = 'DD/MM/YYYY';
   const d = new Date();
   const year = d.getFullYear();
   const month = d.getMonth() + 1;
@@ -78,17 +77,6 @@ export function Payroll(props: any) {
           const name = record.department ? record.department : '';
           return name.includes(value);
         }
-      },
-      {
-        title: 'Designation',
-        dataIndex: 'designation',
-        key: 'designation',
-        width: 180,
-        ellipsis: true,
-        sorter: (a: any , b: any) => {
-          const val = a.designation ? a.designation : '';
-          return val.localeCompare(b.designation);
-        },
       },
       {
         title: 'Employment Type',
@@ -156,57 +144,6 @@ export function Payroll(props: any) {
         key: 'commission',
         width: 170,
         sorter: (a: any , b: any) => a.commission - b.commission,
-      },
-      {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-        width: 300,
-        ellipsis: true,
-        sorter: (a: any , b: any) => {
-          const val = a.address ? a.address : '';
-          return val.localeCompare(b.address);
-        },
-      },
-      {
-        title: 'Contact',
-        dataIndex: 'contact',
-        key: 'contact',
-        width: 200,
-        ellipsis: true,
-        sorter: (a: any , b: any) => {
-          const val = a.contact ? a.contact : '';
-          return val.localeCompare(b.contact);
-        }
-      },
-      {
-        title: 'Email',
-        dataIndex: 'email',
-        key: 'email',
-        width: 230,
-        ellipsis: true,
-        sorter: (a: any , b: any) => {
-          const val = a.email ? a.email : '';
-          return val.localeCompare(b.email);
-        },
-      },
-      {
-        title: 'Date of Join',
-        dataIndex: 'joinDate',
-        key: 'joinDate',
-        width: 150,
-        sorter: (a: any , b: any) => {
-          const dateA = moment(a.joinDate, DATE_FORMAT).unix();
-          const dateB = moment(b.joinDate, DATE_FORMAT).unix();
-
-          return dateA - dateB;
-        },
-      },
-      {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
-        sorter: (a: any , b: any) => a.age - b.age,
       },
       {
         title: 'Action',
@@ -355,12 +292,9 @@ export function Payroll(props: any) {
     setPayrollObj(payrollListObj);
 
     const mergedList = employeeList.items.map(item => {
-      const totalWage = getTotalWage(item, payrollObj[item.id as string]);
+      const totalWage = getTotalWage(item, payrollListObj[item.id as string]);
       return {...item, ...payrollListObj[item.id as string], totalWage };
     });
-    console.log('EFFECT===================');
-    console.log(mergedList, employeeList, payrollListObj);
-    console.log('===================');
 
     setDataSource(mergedList);
 
@@ -530,16 +464,6 @@ export function Payroll(props: any) {
         </Col>
         <Col>
           <Row gutter={8} justify="end">
-            {/* <Col span={12}>
-              <Button
-                type="primary"
-                shape="round"
-                icon={<UserAddOutlined />}
-                onClick={onClickCreateHandler}
-              >
-                Add new
-              </Button>
-            </Col> */}
             <Col span={24}>
               <Button
                 type="primary"
@@ -558,7 +482,7 @@ export function Payroll(props: any) {
         rowKey="id"
         columns={config.columns}
         dataSource={dataSource}
-        scroll={{ x: 2900 }}
+        scroll={{ x: 2000 }}
         pagination={{ position: ['bottomRight'], defaultPageSize: 100, size: 'small' }}
         size="small"
         bordered
