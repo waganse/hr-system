@@ -16,7 +16,6 @@ export const initialEmployee: EmployeeMaster = {
   rate: 0,
   fixedRate: 0,
   commission: 0,
-  hoursWorked: 0,
   joinDate: '',
 };
 

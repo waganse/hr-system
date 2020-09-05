@@ -8,9 +8,9 @@ export const onCreateEmployee = /* GraphQL */ `
       id
       fullName
       email
+      employmentType
       designation
       department
-      employmentType
       age
       address
       contact
@@ -35,9 +35,9 @@ export const onUpdateEmployee = /* GraphQL */ `
       id
       fullName
       email
+      employmentType
       designation
       department
-      employmentType
       age
       address
       contact
@@ -62,9 +62,9 @@ export const onDeleteEmployee = /* GraphQL */ `
       id
       fullName
       email
+      employmentType
       designation
       department
-      employmentType
       age
       address
       contact
@@ -95,9 +95,9 @@ export const onCreatePayroll = /* GraphQL */ `
         id
         fullName
         email
+        employmentType
         designation
         department
-        employmentType
         age
         address
         contact
@@ -131,9 +131,9 @@ export const onUpdatePayroll = /* GraphQL */ `
         id
         fullName
         email
+        employmentType
         designation
         department
-        employmentType
         age
         address
         contact
@@ -167,9 +167,9 @@ export const onDeletePayroll = /* GraphQL */ `
         id
         fullName
         email
+        employmentType
         designation
         department
-        employmentType
         age
         address
         contact
@@ -226,6 +226,7 @@ export const onCreateEmploymentType = /* GraphQL */ `
     onCreateEmploymentType {
       id
       name
+      useBonus
       useSalary
       useRate
       useFixedRate
@@ -240,6 +241,7 @@ export const onUpdateEmploymentType = /* GraphQL */ `
     onUpdateEmploymentType {
       id
       name
+      useBonus
       useSalary
       useRate
       useFixedRate
@@ -254,6 +256,7 @@ export const onDeleteEmploymentType = /* GraphQL */ `
     onDeleteEmploymentType {
       id
       name
+      useBonus
       useSalary
       useRate
       useFixedRate

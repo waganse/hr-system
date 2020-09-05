@@ -8,9 +8,9 @@ export const getEmployee = /* GraphQL */ `
       id
       fullName
       email
+      employmentType
       designation
       department
-      employmentType
       age
       address
       contact
@@ -40,9 +40,9 @@ export const listEmployees = /* GraphQL */ `
         id
         fullName
         email
+        employmentType
         designation
         department
-        employmentType
         age
         address
         contact
@@ -75,9 +75,9 @@ export const getPayroll = /* GraphQL */ `
         id
         fullName
         email
+        employmentType
         designation
         department
-        employmentType
         age
         address
         contact
@@ -116,9 +116,9 @@ export const listPayrolls = /* GraphQL */ `
           id
           fullName
           email
+          employmentType
           designation
           department
-          employmentType
           age
           address
           contact
@@ -169,6 +169,7 @@ export const getEmploymentType = /* GraphQL */ `
     getEmploymentType(id: $id) {
       id
       name
+      useBonus
       useSalary
       useRate
       useFixedRate
@@ -188,6 +189,7 @@ export const listEmploymentTypes = /* GraphQL */ `
       items {
         id
         name
+        useBonus
         useSalary
         useRate
         useFixedRate

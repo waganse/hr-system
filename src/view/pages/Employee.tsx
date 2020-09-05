@@ -13,6 +13,7 @@ import {
   networkFetchDepartmentList,
   networkFetchEmploymentTypeList,
 } from '../../domain/network';
+import { validateUserAccount, normalizeEmployeeImportObj } from '../../domain/helper';
 import { EmployeeMaster, FetchParams, Config } from '../../typings';
 import { Table, Space, Popconfirm, Button, Row, Col, message, Modal, Upload, Input } from 'antd';
 import { InboxOutlined, ImportOutlined, SearchOutlined, UserAddOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -32,7 +33,7 @@ export function Employee(props: any) {
   const [isNew, setIsNew] = useState(true);
   const [selectedItem, setSelectedItem] = useState(initialEmployee);
   const [fileList, setFileList] = useState([]);
-  const [bulkEmployeeList, setBulkEmployeeList] = useState([])
+  const [bulkEmployeeList, setBulkEmployeeList] = useState([] as EmployeeMaster[]);
   const [loading, setLoading] = useState(true)
   const DATE_FORMAT = 'DD/MM/YYYY';
 
@@ -322,7 +323,9 @@ export function Employee(props: any) {
   }
 
   const onSubmitUploadHandler = async () => {
-    const importList = await validateUserAccount();
+    const importList = await validateUserAccount(bulkEmployeeList);
+
+    setBulkEmployeeList(importList);
 
     _.each(importList, ({isNew, ...rest}) => {
       if (isNew) {
@@ -330,7 +333,9 @@ export function Employee(props: any) {
       } else {
         updateEmployeeHandler(rest);
       }
-    })
+    });
+
+    resetState();
   }
 
   const onUploadHandler = (info: UploadChangeParam) => {
@@ -340,34 +345,10 @@ export function Employee(props: any) {
     reader.readAsText(info.file as any);
 
     reader.onloadend = () => {
-      setBulkEmployeeList(JSON.parse(reader.result as string));
+      setBulkEmployeeList(
+        normalizeEmployeeImportObj(JSON.parse(reader.result as string))
+      );
     };
-  }
-
-  const validateUserAccount = async () => {
-    const response = await Promise.all(
-      bulkEmployeeList.map(async (item: EmployeeMaster) => {
-        const email = item.email as string;
-
-        const filter = {
-          or: [
-            { email: { eq: email, },},
-            { email: { eq: email.toUpperCase(), },},
-            { email: { eq: email.toLowerCase(), },},
-          ]
-        };
-
-        const result = await networkFetchEmployeeList({ filter });
-        item.id = result.items.length ? result.items[0].id : null;
-        item.isNew = result.items.length ? false : true;
-
-        return item;
-      })
-    );
-
-    setBulkEmployeeList(response as never[]);
-
-    return response;
   }
 
   const onSearchHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -391,6 +372,7 @@ export function Employee(props: any) {
 
   const resetState = () => {
     setFormVisible(false);
+    setModalVisible(false);
     setSelectedItem({});
   }
 
@@ -400,7 +382,7 @@ export function Employee(props: any) {
 
       <Row justify="space-between" style={{ marginBottom: 16 }}>
         <Col span={6}>
-          <Input prefix={<SearchOutlined className="site-form-item-icon" />} placeholder="Enter full name..." onChange={onSearchHandler} />
+          <Input prefix={<SearchOutlined className="site-form-item-icon" />} placeholder="Enter name..." onChange={onSearchHandler} />
         </Col>
         <Col>
           <Row gutter={8} justify="end">

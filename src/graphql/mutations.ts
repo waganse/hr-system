@@ -11,9 +11,9 @@ export const createEmployee = /* GraphQL */ `
       id
       fullName
       email
+      employmentType
       designation
       department
-      employmentType
       age
       address
       contact
@@ -41,9 +41,9 @@ export const updateEmployee = /* GraphQL */ `
       id
       fullName
       email
+      employmentType
       designation
       department
-      employmentType
       age
       address
       contact
@@ -71,9 +71,9 @@ export const deleteEmployee = /* GraphQL */ `
       id
       fullName
       email
+      employmentType
       designation
       department
-      employmentType
       age
       address
       contact
@@ -107,9 +107,9 @@ export const createPayroll = /* GraphQL */ `
         id
         fullName
         email
+        employmentType
         designation
         department
-        employmentType
         age
         address
         contact
@@ -146,9 +146,9 @@ export const updatePayroll = /* GraphQL */ `
         id
         fullName
         email
+        employmentType
         designation
         department
-        employmentType
         age
         address
         contact
@@ -185,9 +185,9 @@ export const deletePayroll = /* GraphQL */ `
         id
         fullName
         email
+        employmentType
         designation
         department
-        employmentType
         age
         address
         contact
@@ -256,6 +256,7 @@ export const createEmploymentType = /* GraphQL */ `
     createEmploymentType(input: $input, condition: $condition) {
       id
       name
+      useBonus
       useSalary
       useRate
       useFixedRate
@@ -273,6 +274,7 @@ export const updateEmploymentType = /* GraphQL */ `
     updateEmploymentType(input: $input, condition: $condition) {
       id
       name
+      useBonus
       useSalary
       useRate
       useFixedRate
@@ -290,6 +292,7 @@ export const deleteEmploymentType = /* GraphQL */ `
     deleteEmploymentType(input: $input, condition: $condition) {
       id
       name
+      useBonus
       useSalary
       useRate
       useFixedRate

@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
+import { FormField } from '../../../typings';
 import { Button, Form, Col, Row, Input, InputNumber, Select, Drawer, DatePicker } from 'antd';
-import { DepartmentMaster, FormField } from '../../../typings';
 
 type Props = {
   type?: string;
   visible: boolean;
   title: string;
   fields: FormField[];
-  initialValues: DepartmentMaster;
+  initialValues: any;
   layout?: 'vertical' | 'horizontal' | 'inline' | undefined;
   onSubmit: (input: any) => void;
   onClose: () => void;
@@ -54,13 +54,14 @@ export function RegisterForm({
               max={field.max}
               formatter={field.formatter ? field.formatter : (value) => value as string}
               parser={field.parser ? field.parser : (value) => value as string}
+              disabled={field.disabled}
               style={{ width: '100%' }}
             />
           );
           break;
         case 'select':
           formField = (
-            <Select placeholder={field.placeholder}>
+            <Select placeholder={field.placeholder} disabled={field.disabled}>
               { field.options?.map(item => (
                 <Select.Option key={item.key} value={item.value}>
                   {item.value}
@@ -73,13 +74,18 @@ export function RegisterForm({
           formField = (
             <DatePicker
               format={DATE_FORMAT}
+              disabled={field.disabled}
               style={{ width: '100%' }}
             />
           );
           break;
         default:
           formField = (
-            <Input type={field.type} placeholder={field.placeholder} />
+            <Input
+              type={field.type}
+              placeholder={field.placeholder}
+              disabled={field.disabled}
+            />
           );
           break;
       }

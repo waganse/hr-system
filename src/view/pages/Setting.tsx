@@ -74,9 +74,6 @@ export function Setting() {
   }, [authState.isAuth]);
 
   const fetchHandler = async (key: string, params: FetchParams) => {
-console.log('===================');
-console.log(key);
-console.log('===================');
     const dispatcher = actionMap[key].fetch.dispatch;
     const networkAction = actionMap[key].fetch.network;
 

@@ -21,7 +21,6 @@ export type EmployeeMaster = {
   rate?: number;
   fixedRate?: number;
   commission?: number;
-  hoursWorked?: number;
   joinDate?: string | moment.Moment;
   isNew?: boolean;
 }
@@ -32,6 +31,7 @@ export type PayrollMaster = {
   bonus?: number;
   workedMonthYear?: string;
   employeeId?: string;
+  employee?: EmployeeMaster;
 }
 
 export type DepartmentMaster = {
@@ -42,6 +42,7 @@ export type DepartmentMaster = {
 export type EmploymentTypeMaster = {
   id?: string | null;
   name?: string;
+  useBonus?: boolean;
   useSalary?: boolean;
   useRate?: boolean;
   useFixedRate?: boolean;
@@ -64,7 +65,7 @@ export type DepartmentState = {
 }
 
 export type EmploymentTypeState = {
-  items: DepartmentMaster[];
+  items: EmploymentTypeMaster[];
   nextToken: string | null;
 }
 
@@ -109,6 +110,7 @@ export type FormField = {
   readOnly?: boolean;
   formatter?: (value: string | number | undefined) => string;
   parser?: (value: string | undefined) => string;
+  disabled?: boolean;
 }
 
 export type Config = {

@@ -5,6 +5,7 @@ import { EmploymentTypeMaster, EmploymentTypeState } from '../../typings';
 export const initialEmploymentType: EmploymentTypeMaster = {
   id: null,
   name: '',
+  useBonus: false,
   useSalary: false,
   useRate: false,
   useFixedRate: false,

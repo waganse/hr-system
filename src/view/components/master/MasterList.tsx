@@ -70,6 +70,12 @@ export function MasterList({
           },
         },
         {
+          title: 'Bonus',
+          dataIndex: 'useBonus',
+          key: 'useBonus',
+          width: 150,
+        },
+        {
           title: 'Salary',
           dataIndex: 'useSalary',
           key: 'useSalary',
@@ -101,6 +107,18 @@ export function MasterList({
           type: 'text',
           rules: [{ required: true, message: 'Please enter name' }],
           placeholder: 'Please enter name',
+          span: 24,
+        },
+        {
+          label: 'Bonus',
+          name: 'useBonus',
+          type: 'select',
+          options: [
+            { key: 'true', value: 'True' },
+            { key: 'false', value: 'False' },
+          ],
+          rules: [{ required: true, message: 'Please choose item' }],
+          placeholder: 'Please choose item',
           span: 24,
         },
         {
@@ -183,11 +201,8 @@ export function MasterList({
     setIsNew(false);
 
     const targetItem = _.cloneDeep(itemList.filter(item => item.id === id)[0]);
-    console.clear();
-console.log('===================');
-console.log(targetItem);
-console.log('===================');
-    setSelectedItem(targetItem);
+
+    setSelectedItem(normalizeObj(targetItem));
   }
 
   const onSubmitFormHandler = async (input: MasterData) => {
@@ -212,15 +227,20 @@ console.log('===================');
 
   const normalizeList = () => {
     return itemList.map(item => {
-      const keys = Object.keys(item);
-      let _item = {};
-
-      for (let key of keys) {
-        _item[key] = typeof item[key] === 'boolean' ? item[key] + '' : item[key];
-      }
-
-      return _item;
+      return normalizeObj(item);
     });
+  }
+
+  const normalizeObj = (obj: any) => {
+    const keys = Object.keys(obj);
+    let _obj = {};
+
+    for (let key of keys) {
+      _obj[key] = typeof obj[key] === 'boolean' ? obj[key] + '' : obj[key];
+    }
+
+    return _obj;
+
   }
 
   useEffect(() => {
@@ -264,6 +284,7 @@ console.log('===================');
         title={isNew ? 'Add new item' : 'Edit item'}
         fields={config[type].fields}
         initialValues={selectedItem}
+        layout="vertical"
         onSubmit={onSubmitFormHandler}
         onClose={onCloseDrawerHandler}
       />

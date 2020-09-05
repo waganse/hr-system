@@ -22,3 +22,10 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+
+export const EMPLOYMENT_TYPE = {
+  FULL_TIME: 'Full-time',
+  PART_TIME_COMMISSIONED: 'Part-time commissioned',
+  PART_TIME_FIXED: 'Part-time fixed',
+  INTERN: 'Intern',
+}

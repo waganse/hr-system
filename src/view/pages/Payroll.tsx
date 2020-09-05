@@ -2,28 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 import { selectAuth } from '../../domain/store/authSlice';
-import { getManyEmployees, createOneEmployee, updateOneEmployee, deleteOneEmployee, selectEmployee, initialEmployee } from '../../domain/store/employeeSlice';
+import { getManyEmployees, updateOneEmployee, selectEmployee, initialEmployee } from '../../domain/store/employeeSlice';
 import { getManyPayrolls, createOnePayroll, updateOnePayroll, selectPayroll } from '../../domain/store/payrollSlice';
 import { getManyDepartments, selectDepartment } from '../../domain/store/departmentSlice';
-import { getManyEmploymentTypes, selectEmploymentType } from '../../domain/store/employmentTypeSlice';
+import { getManyEmploymentTypes, selectEmploymentType, initialEmploymentType } from '../../domain/store/employmentTypeSlice';
 import {
   networkFetchEmployeeList,
-  networkCreateEmployee,
   networkUpdateEmployee,
-  networkDeleteEmployee,
   networkFetchPayrollList,
   networkFetchDepartmentList,
   networkFetchEmploymentTypeList,
   networkCreatePayroll,
   networkUpdatePayroll,
 } from '../../domain/network';
+import { validateUserAccount, validatePayrollInfo, getTotalWage } from '../../domain/helper';
 import { EmployeeMaster, FetchParams, Config, PayrollMaster } from '../../typings';
-import { Table, Space, Popconfirm, Button, Row, Col, message, Modal, Upload, Input, Typography } from 'antd';
-import { InboxOutlined, SearchOutlined, EditOutlined, DeleteOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Table, Space, Button, Row, Col, message, Modal, Upload, Input, Typography, notification, DatePicker } from 'antd';
+import { InboxOutlined, SearchOutlined, EditOutlined, InfoCircleOutlined, WarningOutlined, ImportOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { RegisterForm } from '../components/common/RegisterForm'
 import { UploadChangeParam } from 'antd/lib/upload';
 import { PageLayout } from '../Layout';
+
 
 export function Payroll(props: any) {
   const dispatch = useDispatch();
@@ -34,17 +34,19 @@ export function Payroll(props: any) {
   const authState = useSelector(selectAuth);
   const [formVisible, setFormVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [isNew, setIsNew] = useState(true);
   const [selectedItem, setSelectedItem] = useState(initialEmployee);
+  const [selectedEmploymentType, setSelectedEmploymentType] = useState(initialEmploymentType);
   const [fileList, setFileList] = useState([]);
-  const [bulkEmployeeList, setBulkEmployeeList] = useState([]);
+  const [bulkPayrollList, setBulkPayrollList] = useState([] as EmployeeMaster[]);
   const [payrollObj, setPayrollObj] = useState({});
+  const [dataSource, setDataSource] = useState([] as any);
   const [loading, setLoading] = useState(true);
   const DATE_FORMAT = 'DD/MM/YYYY';
   const d = new Date();
   const year = d.getFullYear();
   const month = d.getMonth() + 1;
-  const targetMonthYear = `${month}/${year}`;
+  const currentMonthYear = `${month}/${year}`;
+  const [targetMonthYear, setTargetMonthYear] = useState(currentMonthYear);
 
   const config: Config = {
     columns: [
@@ -214,9 +216,6 @@ export function Payroll(props: any) {
         render: (text: string, record: EmployeeMaster) => (
           <Space size="middle">
             <Button type="primary" shape="circle" icon={<EditOutlined />} size="small" onClick={() => onClickEditHandler(record.id as string)} />
-            <Popconfirm title="Sure to delete?" onConfirm={() => deleteEmployeeHandler(record.id as string)}>
-              <Button type="primary" danger shape="circle" icon={<DeleteOutlined />} size="small" />
-            </Popconfirm>
           </Space>
         ),
       },
@@ -273,6 +272,7 @@ export function Payroll(props: any) {
           { type: 'number', message: 'Not a valid number' },
         ],
         span: 24,
+        disabled: !selectedEmploymentType.useBonus,
       },
       {
         label: 'Salary',
@@ -284,6 +284,7 @@ export function Payroll(props: any) {
           { type: 'number', message: 'Not a valid number' },
         ],
         span: 24,
+        disabled: !selectedEmploymentType.useSalary,
       },
       {
         label: 'Rate',
@@ -295,6 +296,7 @@ export function Payroll(props: any) {
           { type: 'number', message: 'Not a valid number' },
         ],
         span: 24,
+        disabled: !selectedEmploymentType.useRate,
       },
       {
         label: 'Fixed Rate',
@@ -306,6 +308,7 @@ export function Payroll(props: any) {
           { type: 'number', message: 'Not a valid number' },
         ],
         span: 24,
+        disabled: !selectedEmploymentType.useFixedRate,
       },
       {
         label: 'Commission',
@@ -319,6 +322,7 @@ export function Payroll(props: any) {
         span: 24,
         formatter: (value) => `${value}%`,
         parser: (value) => value ? value.replace('%', '') : '',
+        disabled: !selectedEmploymentType.useCommission,
       },
     ],
   };
@@ -340,15 +344,26 @@ export function Payroll(props: any) {
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authState.isAuth]);
+  }, [authState.isAuth, targetMonthYear]);
 
   useEffect(() => {
     const payrollListObj = {};
-    _.each(payrollList.items, ({employeeId, id, ...rest}) => {
-      payrollListObj[employeeId as string] = rest;
+    _.each(payrollList.items, ({employeeId, id, employee, ...rest}) => {
+      payrollListObj[employeeId as string] = {...rest };
     });
 
     setPayrollObj(payrollListObj);
+
+    const mergedList = employeeList.items.map(item => {
+      const totalWage = getTotalWage(item, payrollObj[item.id as string]);
+      return {...item, ...payrollListObj[item.id as string], totalWage };
+    });
+    console.log('EFFECT===================');
+    console.log(mergedList, employeeList, payrollListObj);
+    console.log('===================');
+
+    setDataSource(mergedList);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [employeeList.items, payrollList.items]);
 
@@ -368,29 +383,22 @@ export function Payroll(props: any) {
     dispatch(getManyEmploymentTypes(await networkFetchEmploymentTypeList(params)));
   }
 
-  const deleteEmployeeHandler = async (id: string) => {
-    dispatch(deleteOneEmployee(await networkDeleteEmployee({ id })));
-    message.success('Deleted successfully');
-  }
-
-  const createEmployeeHandler = async ({ joinDate, ...others }: any) => {
-    const input = { joinDate: joinDate ? moment(joinDate).format(DATE_FORMAT) : '', ...others };
-
-    dispatch(createOneEmployee(await networkCreateEmployee(input)));
-    message.success('Created successfully');
-    resetState();
-  }
-
-  const updateEmployeeHandler = async ({ joinDate, hoursWorked, bonus, ...others }: any) => {
+  const createPayrollHandler = async ({ id, hoursWorked, bonus, salary, rate, rateFixed, commission }: any) => {
+    // Update payroll info in Employee table
     const empInput = {
-      id: selectedItem.id,
-      joinDate: moment(joinDate).format(DATE_FORMAT),
-      ...others
+      id,
+      salary,
+      rate,
+      rateFixed,
+      commission,
     };
 
-    const payrollItem = await validatePayrollInfo();
-    const hourInput: PayrollMaster = {
-      employeeId: selectedItem.id as string,
+    dispatch(updateOneEmployee(await networkUpdateEmployee(empInput)));
+
+    // Update payroll info in Payroll table
+    const payrollItem = await validatePayrollInfo(id, targetMonthYear);
+    const payrollInput: PayrollMaster = {
+      employeeId: id as string,
       hoursWorked,
       bonus,
       workedMonthYear: targetMonthYear,
@@ -398,44 +406,43 @@ export function Payroll(props: any) {
 
     // Create / Update work hour
     if (payrollItem.isNew) {
-      dispatch(createOnePayroll(await networkCreatePayroll(hourInput)));
+      dispatch(createOnePayroll(await networkCreatePayroll(payrollInput)));
     } else {
-      hourInput.id = payrollItem.id;
-      dispatch(updateOnePayroll(await networkUpdatePayroll(hourInput)));
+      payrollInput.id = payrollItem.id;
+      dispatch(updateOnePayroll(await networkUpdatePayroll(payrollInput)));
     }
-
-    dispatch(updateOneEmployee(await networkUpdateEmployee(empInput)));
 
     message.success('Updated successfully');
     resetState();
   }
 
-  // const onClickCreateHandler = async () => {
-  //   setFormVisible(true);
-  //   setIsNew(true);
-  //   setSelectedItem(initialEmployee);
-  // }
-
-  // const onClickImportHandler = async () => {
-  //   setModalVisible(true);
-  // }
-
   const onClickEditHandler = async (id: string) => {
     setFormVisible(true);
-    setIsNew(false);
 
-    const targetItem = _.cloneDeep(employeeList.items.filter(item => item.id === id)[0]);
+    const targetEmployee = _.cloneDeep(employeeList.items.filter(item => item.id === id)[0]);
 
-    targetItem.joinDate = targetItem.joinDate ? moment(targetItem.joinDate, DATE_FORMAT) : '';
-    setSelectedItem({...targetItem, ...payrollObj[id]} );
+    setSelectedItem({...targetEmployee, ...payrollObj[id]});
+
+    const targetEmpTypeList = employmentTypeList.items.filter(item => item.name === targetEmployee.employmentType);
+
+    let targetEmpType = initialEmploymentType;
+
+    if (targetEmpTypeList.length) {
+      targetEmpType = targetEmpTypeList[0];
+    } else {
+      notification.open({
+        message: 'Invalid employment type detected',
+        description:
+          'The current value is invalid. Please update it in this form.',
+        icon: <WarningOutlined style={{ color: '#f81d22' }} />,
+      });
+    }
+
+    setSelectedEmploymentType(targetEmpType);
   }
 
   const onSubmitFormHandler = (input: any) => {
-    if (isNew) {
-      createEmployeeHandler(input);
-    } else {
-      updateEmployeeHandler(input);
-    }
+    createPayrollHandler({...input, id: selectedItem.id });
   }
 
   const onUploadHandler = (info: UploadChangeParam) => {
@@ -445,69 +452,26 @@ export function Payroll(props: any) {
     reader.readAsText(info.file as any);
 
     reader.onloadend = () => {
-      setBulkEmployeeList(JSON.parse(reader.result as string));
+      const { targetMonthYear, data } = JSON.parse(reader.result as string);
+      setBulkPayrollList(data);
+      setTargetMonthYear(targetMonthYear);
     };
   }
 
   const onSubmitUploadHandler = async () => {
-    const importList = await validateUserAccount();
+    const importList = await validateUserAccount(bulkPayrollList);
+
+    setBulkPayrollList(importList);
 
     _.each(importList, ({isNew, ...rest}) => {
       if (isNew) {
-        createEmployeeHandler(rest);
+        // createPayrollHandler(rest);
+        message.error(`User ${rest.fullName} does not exist`)
       } else {
-        updateEmployeeHandler(rest);
+        createPayrollHandler(rest);
       }
     })
   }
-
-  const validateUserAccount = async () => {
-    const response = await Promise.all(
-      bulkEmployeeList.map(async (item: EmployeeMaster) => {
-        const email = item.email as string;
-
-        const filter = {
-          or: [
-            { email: { eq: email, },},
-            { email: { eq: email.toUpperCase(), },},
-            { email: { eq: email.toLowerCase(), },},
-          ]
-        };
-
-        const result = await networkFetchEmployeeList({ filter });
-        item.id = result.items.length ? result.items[0].id : null;
-        item.isNew = result.items.length ? false : true;
-
-        return item;
-      })
-    );
-
-    setBulkEmployeeList(response as never[]);
-
-    return response;
-  }
-
-  const validatePayrollInfo = async () => {
-    const item = {
-      id: null,
-      isNew: true,
-    };
-    const filter = {
-      and: [
-        { employeeId: { eq: selectedItem.id, },},
-        { workedMonthYear: { eq: targetMonthYear, },},
-      ]
-    };
-
-    const result = await networkFetchPayrollList({ filter });
-
-    if (result.items.length) {
-      item.id = result.items[0].id;
-      item.isNew = false;
-    }
-
-    return item;
-  };
 
   const onSearchHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value: string = e.target.value;
@@ -524,11 +488,16 @@ export function Payroll(props: any) {
     dispatch(getManyEmployees(await networkFetchEmployeeList({ filter })));
   }
 
+  const onClickImportHandler = async () => {
+    setModalVisible(true);
+  }
+
   const onCloseDrawerHandler = () => {
     resetState();
   }
 
   const resetState = () => {
+    setModalVisible(false);
     setFormVisible(false);
     setSelectedItem({});
   }
@@ -545,8 +514,19 @@ export function Payroll(props: any) {
       </div>
 
       <Row justify="space-between" style={{ marginBottom: 16 }}>
-        <Col span={6}>
-          <Input prefix={<SearchOutlined className="site-form-item-icon" />} placeholder="Enter full name..." onChange={onSearchHandler} />
+        <Col span={10}>
+          <Space size="middle">
+            <Input prefix={<SearchOutlined className="site-form-item-icon" />} placeholder="Enter name..." onChange={onSearchHandler} />
+            <DatePicker
+              picker="month"
+              value={moment(`1/${targetMonthYear}`, 'D/MM/YYYY')}
+              format="M/YYYY"
+              allowClear={false}
+              onChange={(date, dateString) => {
+                setTargetMonthYear(dateString);
+              }}
+            />
+          </Space>
         </Col>
         <Col>
           <Row gutter={8} justify="end">
@@ -560,7 +540,7 @@ export function Payroll(props: any) {
                 Add new
               </Button>
             </Col> */}
-            {/* <Col span={24}>
+            <Col span={24}>
               <Button
                 type="primary"
                 shape="round"
@@ -569,7 +549,7 @@ export function Payroll(props: any) {
               >
                 Import data
               </Button>
-            </Col> */}
+            </Col>
           </Row>
         </Col>
       </Row>
@@ -577,9 +557,7 @@ export function Payroll(props: any) {
       <Table
         rowKey="id"
         columns={config.columns}
-        dataSource={employeeList.items.map(item => {
-          return {...item, ...payrollObj[item.id as string]}
-        })}
+        dataSource={dataSource}
         scroll={{ x: 2900 }}
         pagination={{ position: ['bottomRight'], defaultPageSize: 100, size: 'small' }}
         size="small"

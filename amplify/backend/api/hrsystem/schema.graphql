@@ -2,9 +2,9 @@ type Employee @model {
   id: ID!
   fullName: String!
   email: String!
-  designation: String!
-  department: String!
   employmentType: String!
+  designation: String
+  department: String
   age: Int
   address: String
   contact: String
@@ -18,8 +18,8 @@ type Employee @model {
 
 type Payroll @model @key(name: "byEmployee", fields: ["employeeId"]) {
   id: ID!
-  hoursWorked: Float!
-  bonus: Float!
+  hoursWorked: Float
+  bonus: Float
   workedMonthYear: String
   employeeId: ID!
   employee: Employee @connection(fields: ["employeeId"])
@@ -39,6 +39,7 @@ type Department @model {
 type EmploymentType @model {
   id: ID!
   name: String!
+  useBonus: Boolean
   useSalary: Boolean
   useRate: Boolean
   useFixedRate: Boolean
