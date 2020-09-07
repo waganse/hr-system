@@ -499,7 +499,7 @@ export function Payroll(props: any) {
       />
 
       <Modal
-        title="Import employee list"
+        title="Import payroll data"
         centered
         visible={modalVisible}
         onOk={onSubmitUploadHandler}
