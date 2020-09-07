@@ -18,7 +18,7 @@ import { message, Tabs } from 'antd';
 import { MasterList } from '../components/master/MasterList';
 import { PageLayout } from '../Layout';
 
-export function Setting() {
+export function Master() {
   const departmentList = useSelector(selectDepartment);
   const employmentTypeList = useSelector(selectEmploymentType);
   const authState = useSelector(selectAuth);

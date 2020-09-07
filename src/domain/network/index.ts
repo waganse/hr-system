@@ -3,3 +3,4 @@ export * from './employee';
 export * from './payroll';
 export * from './department';
 export * from './employmentType';
+export * from './account';

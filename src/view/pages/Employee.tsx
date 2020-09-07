@@ -282,15 +282,15 @@ export function Employee(props: any) {
     message.success('Deleted successfully');
   }
 
-  const createEmployeeHandler = async ({ joinDate, ...others }: any) => {
-    const input = { joinDate: joinDate ? moment(joinDate).format(DATE_FORMAT) : '', ...others };
-    dispatch(createOneEmployee(await networkCreateEmployee(input)));
+  const createEmployeeHandler = async (params: any) => {
+    dispatch(createOneEmployee(await networkCreateEmployee(params)));
     message.success('Created successfully');
     resetState();
   }
 
-  const updateEmployeeHandler = async ({ joinDate, ...others }: any) => {
-    const input = { id: selectedItem.id, joinDate: moment(joinDate).format(DATE_FORMAT), ...others };
+  const updateEmployeeHandler = async (params: any) => {
+    const input = { id: selectedItem.id, ...params };
+
     dispatch(updateOneEmployee(await networkUpdateEmployee(input)));
     message.success('Updated successfully');
     resetState();
@@ -314,7 +314,9 @@ export function Employee(props: any) {
     setSelectedItem(targetItem);
   }
 
-  const onSubmitFormHandler = (input: any) => {
+  const onSubmitFormHandler = ({joinDate, ...rest}: any) => {
+    const input = { joinDate: joinDate ? moment(joinDate).format(DATE_FORMAT) : '', ...rest };
+
     if (isNew) {
       createEmployeeHandler(input);
     } else {
@@ -346,7 +348,11 @@ export function Employee(props: any) {
 
     reader.onloadend = () => {
       setBulkEmployeeList(
-        normalizeEmployeeImportObj(JSON.parse(reader.result as string))
+        normalizeEmployeeImportObj(
+          JSON.parse(reader.result as string),
+          departmentList.items,
+          employmentTypeList.items
+        )
       );
     };
   }

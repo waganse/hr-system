@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, NavLink } from 'react-router-dom';
-import { networkSignOut } from '../domain/network';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectAccount, initialPagePermission, setManyAccounts, setGroup } from '../domain/store/accountSlice';
+import { networkSignOut, networkFetchManyAccounts } from '../domain/network';
 import { Layout, Menu, Row, Col, Button, message } from 'antd';
 import {
   MoneyCollectOutlined,
@@ -10,30 +12,65 @@ import {
 } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import logo from '../logo.svg'
+import { normalizeFetchedAccounts } from '../domain/helper';
+import { Auth } from 'aws-amplify';
+import { PAGE_PERMISSION } from '../domain/store/store';
 
 const { Header, Content, Sider, Footer } = Layout;
 
 export function PageLayout(props: any) {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const accountList = useSelector(selectAccount);
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState([history.location.pathname.replace('/', '')]);
+  const [permission, setPermission] = useState(initialPagePermission);
+
+  useEffect(() => {
+    fetchAccountHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    getCurrentUserGroup();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountList]);
+
+  const fetchAccountHandler = async () => {
+    const account = await networkFetchManyAccounts();
+    const normalizedAccountList = normalizeFetchedAccounts(account);
+    dispatch(setManyAccounts(normalizedAccountList));
+  };
+
+  const getCurrentUserGroup = async () => {
+    const currentUser = await Auth.currentAuthenticatedUser();
+    const user = accountList.items.filter(item => {
+      return item.cognitoId === currentUser.username;
+    })[0];
+
+    if (user) {
+      const group = user.group as string;
+      dispatch(setGroup({ group }));
+      setPermission(PAGE_PERMISSION[group]);
+    }
+  };
 
   const onCollapseHandler = (collapsed: boolean) => {
     setCollapsed(collapsed);
-  }
+  };
 
   const onClickNav = (e: any) => {
     const key: string = e.key ? e.key : 'employee';
 
     setSelectedKeys([key]);
     history.push(`/${key}`);
-  }
+  };
 
   const signOutHandler = async () => {
     await networkSignOut();
     message.info('Signed out');
     history.push('/auth/signin');
-  }
+  };
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -60,18 +97,31 @@ export function PageLayout(props: any) {
             selectedKeys={selectedKeys}
             onClick={onClickNav}
           >
-            <Menu.Item key="employee" icon={<UserOutlined />} style={{ marginTop: 0 }}>
-              Employee List
-            </Menu.Item>
-            <Menu.Item key="payroll" icon={<MoneyCollectOutlined />}>
-              Payroll
-            </Menu.Item>
-            <Menu.Item key="report" icon={<PieChartOutlined />}>
-              Report
-            </Menu.Item>
-            <Menu.Item key="setting" icon={<SettingOutlined />}>
-              Settings
-            </Menu.Item>
+            { permission.employee ?
+              <Menu.Item key="employee" icon={<UserOutlined />} style={{ marginTop: 0 }}>
+                Employee List
+              </Menu.Item> : null
+            }
+            { permission.payroll ?
+              <Menu.Item key="payroll" icon={<MoneyCollectOutlined />}>
+                Payroll
+              </Menu.Item> : null
+            }
+            { permission.report ?
+              <Menu.Item key="report" icon={<PieChartOutlined />}>
+                Report
+              </Menu.Item> : null
+            }
+            { permission.master ?
+              <Menu.Item key="master" icon={<SettingOutlined />}>
+                Master Data
+              </Menu.Item> : null
+            }
+            { permission.account ?
+              <Menu.Item key="account" icon={<SettingOutlined />}>
+                Account List
+              </Menu.Item> : null
+            }
           </Menu>
         </Sider>
         <Layout style={{ padding: '0 24px 24px' }}>

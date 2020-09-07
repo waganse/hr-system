@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
+import moment from 'moment';
 import { selectAuth } from '../../domain/store/authSlice';
 import { getManyEmployees, updateOneEmployee, selectEmployee, initialEmployee } from '../../domain/store/employeeSlice';
 import { getManyPayrolls, createOnePayroll, updateOnePayroll, selectPayroll } from '../../domain/store/payrollSlice';
@@ -19,7 +20,6 @@ import { validateUserAccount, validatePayrollInfo, getTotalWage } from '../../do
 import { EmployeeMaster, FetchParams, Config, PayrollMaster } from '../../typings';
 import { Table, Space, Button, Row, Col, message, Modal, Upload, Input, Typography, notification, DatePicker } from 'antd';
 import { InboxOutlined, SearchOutlined, EditOutlined, InfoCircleOutlined, WarningOutlined, ImportOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import { RegisterForm } from '../components/common/RegisterForm'
 import { UploadChangeParam } from 'antd/lib/upload';
 import { PageLayout } from '../Layout';
@@ -195,6 +195,7 @@ export function Payroll(props: any) {
         min: 0,
         max: 1000000000000000,
         rules: [
+          { required: true, message: 'Please enter value' },
           { type: 'number', message: 'Not a valid number' },
         ],
         span: 24,
@@ -205,7 +206,10 @@ export function Payroll(props: any) {
         type: 'number',
         min: 0,
         max: 1000000000000000,
-        rules: [
+        rules: selectedEmploymentType.useBonus ? [
+          { required: true, message: 'Please enter value' },
+          { type: 'number', message: 'Not a valid number' },
+        ] : [
           { type: 'number', message: 'Not a valid number' },
         ],
         span: 24,
@@ -217,7 +221,10 @@ export function Payroll(props: any) {
         type: 'number',
         min: 0,
         max: 1000000000000000,
-        rules: [
+        rules: selectedEmploymentType.useSalary ? [
+          { required: true, message: 'Please enter value' },
+          { type: 'number', message: 'Not a valid number' },
+        ] : [
           { type: 'number', message: 'Not a valid number' },
         ],
         span: 24,
@@ -229,7 +236,10 @@ export function Payroll(props: any) {
         type: 'number',
         min: 0,
         max: 1000000000000000,
-        rules: [
+        rules: selectedEmploymentType.useRate ? [
+          { required: true, message: 'Please enter value' },
+          { type: 'number', message: 'Not a valid number' },
+        ] : [
           { type: 'number', message: 'Not a valid number' },
         ],
         span: 24,
@@ -241,7 +251,10 @@ export function Payroll(props: any) {
         type: 'number',
         min: 0,
         max: 1000000000000000,
-        rules: [
+        rules: selectedEmploymentType.useFixedRate ? [
+          { required: true, message: 'Please enter value' },
+          { type: 'number', message: 'Not a valid number' },
+        ] : [
           { type: 'number', message: 'Not a valid number' },
         ],
         span: 24,
@@ -253,7 +266,10 @@ export function Payroll(props: any) {
         type: 'number',
         min: 0,
         max: 100,
-        rules: [
+        rules: selectedEmploymentType.useCommission ? [
+          { required: true, message: 'Please enter value' },
+          { type: 'number', message: 'Not a valid number' },
+        ] : [
           { type: 'number', message: 'Not a valid number' },
         ],
         span: 24,
@@ -317,13 +333,13 @@ export function Payroll(props: any) {
     dispatch(getManyEmploymentTypes(await networkFetchEmploymentTypeList(params)));
   }
 
-  const createPayrollHandler = async ({ id, hoursWorked, bonus, salary, rate, rateFixed, commission }: any) => {
+  const createPayrollHandler = async ({ id, hoursWorked, bonus, salary, rate, fixedRate, commission }: any) => {
     // Update payroll info in Employee table
     const empInput = {
       id,
       salary,
       rate,
-      rateFixed,
+      fixedRate,
       commission,
     };
 

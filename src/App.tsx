@@ -6,7 +6,8 @@ import { SignIn } from './view/pages/auth/SignIn';
 import { Employee } from './view/pages/Employee';
 import { Payroll } from './view/pages/Payroll';
 import { Report } from './view/pages/Report';
-import { Setting } from './view/pages/Setting';
+import { Master } from './view/pages/Master';
+import { Account } from './view/pages/Account';
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
         <Route path="/employee" component={Employee} />
         <Route path="/payroll" component={Payroll} />
         <Route path="/report" component={Report} />
-        <Route path="/setting" component={Setting} />
+        <Route path="/master" component={Master} />
+        <Route path="/account" component={Account} />
         <Route path="/auth/signin" component={SignIn} />
       </Switch>
     </AuthProvider>

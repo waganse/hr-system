@@ -7,6 +7,14 @@ export type AuthMaster = {
     }
 }
 
+export type AccountMaster = {
+  id: string | null;
+  group?: string;
+  updatedAt?: string;
+  createdAt?: string;
+  cognitoId?: string;
+}
+
 export type EmployeeMaster = {
   id?: string | null;
   fullName?: string;
@@ -49,6 +57,11 @@ export type EmploymentTypeMaster = {
   useCommission?: boolean;
 }
 
+export type AccountState = {
+  items: AccountMaster[];
+  group: string;
+}
+
 export type EmployeeState = {
   items: EmployeeMaster[];
   nextToken: string | null;
@@ -87,7 +100,7 @@ export type TableColumn = {
   width?: number;
   fixed?: boolean | 'left' | 'right';
   ellipsis?: boolean;
-  render?: (text: string, record: EmployeeMaster) => React.ReactNode | JSX.Element;
+  render?: (text: string, record: any) => React.ReactNode | JSX.Element;
   sorter?: any;
   filters?: {
       text: string;
@@ -130,4 +143,3 @@ type FormOption = {
   key: string;
   value: string;
 }
-

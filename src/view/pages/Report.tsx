@@ -1,44 +1,78 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { selectAuth } from '../../domain/store/authSlice';
+import {
+  networkFetchPayrollList,
+  networkFetchDepartmentList,
+} from '../../domain/network';
+import { getTotalWageByDepartment } from '../../domain/helper';
+import { FetchParams } from '../../typings';
+import { Row, Col, DatePicker, Empty } from 'antd';
 import { PageLayout } from '../Layout';
 import { ResponsivePie } from '@nivo/pie'
 
 export function Report() {
+  const authState = useSelector(selectAuth);
+  const [data, setData] = useState([]);
+  const [total, setTotal] = useState(0);
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = d.getMonth() + 1;
+  const currentMonthYear = `${month}/${year}`;
+  const [targetMonthYear, setTargetMonthYear] = useState(currentMonthYear);
 
-  const data =  [
-    {
-      "id": "rust",
-      "label": "rust",
-      "value": 227,
-      "color": "hsl(249, 70%, 50%)"
-    },
-    {
-      "id": "go",
-      "label": "go",
-      "value": 507,
-      "color": "hsl(205, 70%, 50%)"
-    },
-    {
-      "id": "css",
-      "label": "css",
-      "value": 490,
-      "color": "hsl(278, 70%, 50%)"
-    },
-    {
-      "id": "make",
-      "label": "make",
-      "value": 98,
-      "color": "hsl(262, 70%, 50%)"
-    },
-    {
-      "id": "java",
-      "label": "java",
-      "value": 459,
-      "color": "hsl(232, 70%, 50%)"
+  // const data =  [
+  //   {
+  //     "id": "rust",
+  //     "label": "rust",
+  //     "value": 227,
+  //   },
+  //   {
+  //     "id": "go",
+  //     "label": "go",
+  //     "value": 507,
+  //   },
+  //   {
+  //     "id": "css",
+  //     "label": "css",
+  //     "value": 490,
+  //   },
+  //   {
+  //     "id": "make",
+  //     "label": "make",
+  //     "value": 98,
+  //   },
+  //   {
+  //     "id": "java",
+  //     "label": "java",
+  //     "value": 459,
+  //   }
+  // ];
+
+  useEffect(() => {
+    if (authState.isAuth) {
+      fetchHandler({ filter: { workedMonthYear: { eq: targetMonthYear } } });
     }
-  ];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authState.isAuth, targetMonthYear]);
+
+  const fetchHandler = async (params: FetchParams) => {
+    const payrollList = await networkFetchPayrollList(params);
+    const departmentList = await networkFetchDepartmentList({});
+    console.clear();
+    console.log('===================');
+    console.log(payrollList);
+    console.log('===================');
+    const { totalWageData, totalAmount } = getTotalWageByDepartment(payrollList.items, departmentList.items, targetMonthYear);
+    setData(totalWageData as any);
+    setTotal(totalAmount);
+  }
 
   const responsivePie = (
-    <ResponsivePie
+    <>
+    { total ?
+      <ResponsivePie
         data={data}
         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
         innerRadius={0.5}
@@ -81,12 +115,29 @@ export function Report() {
                 ]
             }
         ]}
-    />
+      /> :
+      <Empty style={{ margin: '200px auto' }} />
+    }
+    </>
   )
 
   return (
     <PageLayout>
       <h2>Reporting</h2>
+
+      <Row justify="space-between" style={{ marginBottom: 16 }}>
+        <Col span={10}>
+          <DatePicker
+            picker="month"
+            value={moment(`1/${targetMonthYear}`, 'D/MM/YYYY')}
+            format="M/YYYY"
+            allowClear={false}
+            onChange={(date, dateString) => {
+              setTargetMonthYear(dateString);
+            }}
+          />
+        </Col>
+      </Row>
 
       <div style={{ width: '100%', height: 'calc(100vh - 255px)' }}>
         { responsivePie }

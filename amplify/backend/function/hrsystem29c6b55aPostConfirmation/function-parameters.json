@@ -1,16 +1,17 @@
 {
-    "trigger": true,
-    "modules": [
-        "add-to-group"
-    ],
-    "parentResource": "hrsystem29c6b55a",
-    "functionName": "hrsystem29c6b55aPostConfirmation",
-    "resourceName": "hrsystem29c6b55aPostConfirmation",
-    "parentStack": "auth",
-    "triggerEnvs": [],
-    "triggerDir": "/Users/yosukesato/.nodebrew/node/v12.14.1/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/PostConfirmation",
-    "triggerTemplate": "PostConfirmation.json.ejs",
-    "roleName": "hrsystem29c6b55aPostConfirmation",
-    "skipEdit": true,
-    "GROUP": "admin"
+  "trigger": true,
+  "modules": [
+    "add-to-group"
+  ],
+  "parentResource": "hrsystem29c6b55a",
+  "functionName": "hrsystem29c6b55aPostConfirmation",
+  "resourceName": "hrsystem29c6b55aPostConfirmation",
+  "parentStack": "auth",
+  "triggerEnvs": "[]",
+  "triggerDir": "/Users/yosukesato/.nodebrew/node/v12.14.1/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/PostConfirmation",
+  "triggerTemplate": "PostConfirmation.json.ejs",
+  "roleName": "hrsystem29c6b55aPostConfirmation",
+  "skipEdit": true,
+  "GROUP": "admin",
+  "triggerEventPath": "PostConfirmation.event.json"
 }

@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { networkFetchEmployeeList } from '../../domain/network';
-import { EmployeeMaster } from '../../typings';
+import { EmployeeMaster, DepartmentMaster, EmploymentTypeMaster } from '../../typings';
+import { message } from 'antd';
 
 const employeeStateKeys = [
   'fullName',
@@ -11,13 +12,38 @@ const employeeStateKeys = [
   'age',
   'address',
   'contact',
+  'joinDate',
 ];
 
-export const normalizeEmployeeImportObj = (jsonObjList: any) => {
+export const normalizeEmployeeImportObj = (jsonObjList: any, departmentList: DepartmentMaster[], employmentTypeList: EmploymentTypeMaster[]) => {
+  const departments = departmentList.map(item => {
+    return item.name;
+  });
+  const employmentTypes = employmentTypeList.map(item => {
+    return item.name;
+  });
+
   return jsonObjList.map((obj: any) => {
     const _obj = {};
     _.each(employeeStateKeys, (key => {
-      _obj[key] = obj[key];
+      let value = obj[key];
+
+      switch (key) {
+        case 'department':
+          if (!departments.includes(value)) {
+            message.error(`Invalid department: ${value}`);
+            value = '';
+          }
+          break;
+        case 'employmentType':
+          if (!employmentTypes.includes(value)) {
+            message.error(`Invalid employment type: ${value}`);
+            value = '';
+          }
+          break;
+      }
+
+      _obj[key] = value;
     }));
 
     return _obj;
