@@ -6,8 +6,9 @@ const initialState: AuthMaster = {
   isAuth: false,
   token: '',
   user: {
-    roles: [],
-    name: '',
+    id: '',
+    email: '',
+    group: '',
   }
 };
 
@@ -17,8 +18,9 @@ export const authSlice = createSlice({
   reducers: {
     updateAuthState: (state, action: PayloadAction<AuthMaster>) => {
       state.isAuth = action.payload.isAuth;
-      state.user.roles = action.payload.user.roles;
-      state.user.name = action.payload.user.name;
+      state.user.id = action.payload.user.id;
+      state.user.email = action.payload.user.email;
+      state.user.group = action.payload.user.group;
     },
   },
 });

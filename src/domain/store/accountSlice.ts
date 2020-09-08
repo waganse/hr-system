@@ -13,14 +13,14 @@ export const initialPagePermission = {
 export const initialAccount: AccountMaster = {
   id: null,
   group: '',
-  updatedAt: '',
-  createdAt: '',
-  cognitoId: '',
+  verified: false,
+  updatedAt: '-',
+  createdAt: '-',
+  cognitoId: '-',
 };
 
 const initialState: AccountState = {
   items: [],
-  group: '',
 };
 
 export const accountSlice = createSlice({
@@ -29,9 +29,6 @@ export const accountSlice = createSlice({
   reducers: {
     setManyAccounts: (state, action: PayloadAction<AccountMaster[]>) => {
       state.items = action.payload;
-    },
-    setGroup: (state, action: PayloadAction<any>) => {
-      state.group = action.payload.group;
     },
     createOneAccount: (state, action: PayloadAction<AccountMaster>) => {
       state.items.push(action.payload);
@@ -47,7 +44,7 @@ export const accountSlice = createSlice({
   },
 });
 
-export const { setManyAccounts, setGroup, createOneAccount, updateOneAccount, deleteOneAccount } = accountSlice.actions;
+export const { setManyAccounts, createOneAccount, updateOneAccount, deleteOneAccount } = accountSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

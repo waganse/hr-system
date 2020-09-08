@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { AuthProvider } from './view/Auth';
 import { Landing } from './view/pages/Landing';
 import { SignIn } from './view/pages/auth/SignIn';
+import { Verification } from './view/pages/auth/Verification';
 import { Employee } from './view/pages/Employee';
 import { Payroll } from './view/pages/Payroll';
 import { Report } from './view/pages/Report';
@@ -20,6 +21,7 @@ function App() {
         <Route path="/master" component={Master} />
         <Route path="/account" component={Account} />
         <Route path="/auth/signin" component={SignIn} />
+        <Route path="/auth/verification" component={Verification} />
       </Switch>
     </AuthProvider>
   );

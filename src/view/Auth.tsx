@@ -9,23 +9,26 @@ export function AuthProvider(props: any) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log('AUTH===================');
     fetchAuthHandler();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchAuthHandler = async () => {
     try {
-      const auth = await networkFetchAuthState();
+      const user = await networkFetchAuthState();
 
       const isAuth = true;
-      const name = auth.username;
-      const roles = auth.signInUserSession.accessToken.payload["cognito:groups"];
+      const id = user.username;
+      const email = user.attributes.email;
+      const group = user.attributes['custom:userGroup'];
 
       dispatch(updateAuthState({
         isAuth,
         user: {
-          name,
-          roles,
+          id,
+          email,
+          group,
         }
       }));
     } catch {

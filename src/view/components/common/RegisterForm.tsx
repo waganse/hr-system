@@ -79,6 +79,14 @@ export function RegisterForm({
             />
           );
           break;
+        case 'password':
+          formField = (
+            <Input.Password
+              placeholder={field.placeholder}
+              disabled={field.disabled}
+            />
+          );
+          break;
         default:
           formField = (
             <Input

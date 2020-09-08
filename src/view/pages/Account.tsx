@@ -3,8 +3,8 @@ import _ from 'lodash';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { selectAuth } from '../../domain/store/authSlice';
-import { setManyAccounts, selectAccount, initialAccount, updateOneAccount } from '../../domain/store/accountSlice';
-import { networkFetchManyAccounts, networkAddAccountToGroup, networkRemoveAccountFromGroup } from '../../domain/network';
+import { setManyAccounts, selectAccount, initialAccount, createOneAccount, deleteOneAccount } from '../../domain/store/accountSlice';
+import { networkFetchManyAccounts, networkAddAccount, networkDisableAccount, networkAddAccountToGroup } from '../../domain/network';
 import { normalizeFetchedAccounts } from '../../domain/helper'
 import { Config, AccountMaster } from '../../typings';
 import { Table, Space, Button, Popconfirm, message, Row, Col } from 'antd';
@@ -54,6 +54,12 @@ export function Account() {
         }
       },
       {
+        title: 'E-mail verified',
+        dataIndex: 'verified',
+        key: 'verified',
+        width: 150,
+      },
+      {
         title: 'Last pdated at',
         dataIndex: 'updatedAt',
         key: 'updatedAt',
@@ -98,11 +104,21 @@ export function Account() {
         name: 'id',
         type: 'email',
         rules: [
-          { required: true, message: 'Please select a group' },
+          { required: true, message: 'Please enter email' },
           { type: 'email', message: 'Not a valid email' },
         ],
         span: 24,
         readOnly: !isNew,
+      },
+      {
+        label: 'Password',
+        name: 'password',
+        type: 'password',
+        rules: [
+          { required: false, min: 8, message: 'Please enter valid password (8 and more characters)' },
+        ],
+        placeholder: 'Enter new password',
+        span: 24,
       },
       {
         label: 'User Group',
@@ -115,6 +131,12 @@ export function Account() {
         rules: [
           { required: true, message: 'Please select a group' },
         ],
+      },
+      {
+        label: 'E-mail verified',
+        name: 'verified',
+        span: 24,
+        readOnly: true,
       },
       {
         label: 'Updated at',
@@ -166,30 +188,45 @@ export function Account() {
   }
 
   const deleteHandler = async (id: string) => {
-    // dispatch(dispatcher(await networkAction({ id })));
+    await networkDisableAccount(id);
+
+    dispatch(deleteOneAccount({id}));
     message.success('Deleted successfully');
   }
 
-  const createHandler = async (input: any) => {
-    // const dispatcher = actionMap[selectedMaster].create.dispatch;
-    // const networkAction = actionMap[selectedMaster].create.network;
+  const createHandler = async ({ id, password, group }: any) => {
+    try {
+      const response = await networkAddAccount({username: id, password, group});
 
-    // dispatch(dispatcher(await networkAction(input)));
-    message.success('Created successfully');
+      if (response) {
+        console.clear();
+console.log('===================');
+console.log(group);
+console.log('===================');
+        await networkAddAccountToGroup(response.userSub, group);
+      }
+
+      const userState: AccountMaster = {
+        id,
+        group,
+        verified: false,
+        cognitoId: response?.userSub,
+      }
+
+      dispatch(createOneAccount(userState));
+      message.success('Created successfully');
+      resetState();
+    } catch(e) {
+      message.error(e.message);
+    }
   }
 
-  const updateHandler = async (input: any) => {
-    await networkRemoveAccountFromGroup(input.cognitoId, selectedItem.group as string);
-    await networkAddAccountToGroup(input.cognitoId, input.group);
-
-    dispatch(updateOneAccount(input));
+  const updateHandler = async ({ id, password, group, cognitoId }: any) => {
     message.success('Updated successfully');
     resetState();
   }
 
-  const onSubmitFormHandler = ({joinDate, ...rest}: any) => {
-    const input = { joinDate: joinDate ? moment(joinDate).format(DATE_FORMAT) : '', ...rest };
-
+  const onSubmitFormHandler = (input: any) => {
     if (isNew) {
       createHandler(input);
     } else {

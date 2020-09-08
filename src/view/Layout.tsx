@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectAccount, initialPagePermission, setManyAccounts, setGroup } from '../domain/store/accountSlice';
-import { networkSignOut, networkFetchManyAccounts } from '../domain/network';
+import { useSelector } from 'react-redux';
+import { initialPagePermission } from '../domain/store/accountSlice';
+import { networkSignOut } from '../domain/network';
 import { Layout, Menu, Row, Col, Button, message } from 'antd';
 import {
   MoneyCollectOutlined,
@@ -12,48 +12,24 @@ import {
 } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import logo from '../logo.svg'
-import { normalizeFetchedAccounts } from '../domain/helper';
-import { Auth } from 'aws-amplify';
 import { PAGE_PERMISSION } from '../domain/store/store';
+import { selectAuth } from '../domain/store/authSlice';
 
 const { Header, Content, Sider, Footer } = Layout;
 
 export function PageLayout(props: any) {
   const history = useHistory();
-  const dispatch = useDispatch();
-  const accountList = useSelector(selectAccount);
+  const authState = useSelector(selectAuth);
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState([history.location.pathname.replace('/', '')]);
   const [permission, setPermission] = useState(initialPagePermission);
 
   useEffect(() => {
-    fetchAccountHandler();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    getCurrentUserGroup();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accountList]);
-
-  const fetchAccountHandler = async () => {
-    const account = await networkFetchManyAccounts();
-    const normalizedAccountList = normalizeFetchedAccounts(account);
-    dispatch(setManyAccounts(normalizedAccountList));
-  };
-
-  const getCurrentUserGroup = async () => {
-    const currentUser = await Auth.currentAuthenticatedUser();
-    const user = accountList.items.filter(item => {
-      return item.cognitoId === currentUser.username;
-    })[0];
-
-    if (user) {
-      const group = user.group as string;
-      dispatch(setGroup({ group }));
-      setPermission(PAGE_PERMISSION[group]);
+    if (authState.user.group) {
+      setPermission(PAGE_PERMISSION[authState.user.group]);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authState]);
 
   const onCollapseHandler = (collapsed: boolean) => {
     setCollapsed(collapsed);

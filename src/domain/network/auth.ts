@@ -5,13 +5,7 @@ export const networkFetchAuthState = async () => {
 }
 
 export const networkSignIn = async (name: string, password: string) => {
-  const response = await Auth.signIn(name, password);
-
-  if (!response) {
-    throw new Error();
-  }
-
-  return response;
+  return await Auth.signIn(name, password);
 }
 
 export const networkSignOut = async () => {

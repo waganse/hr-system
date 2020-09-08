@@ -1,15 +1,17 @@
 export type AuthMaster = {
-    isAuth: boolean;
-    token?: string;
-    user: {
-        roles?: string[];
-        name?: string;
-    }
+  isAuth: boolean;
+  token?: string;
+  user: {
+    id?: string;
+    email?: string;
+    group?: string;
+  }
 }
 
 export type AccountMaster = {
   id: string | null;
   group?: string;
+  verified?: boolean;
   updatedAt?: string;
   createdAt?: string;
   cognitoId?: string;
@@ -59,7 +61,6 @@ export type EmploymentTypeMaster = {
 
 export type AccountState = {
   items: AccountMaster[];
-  group: string;
 }
 
 export type EmployeeState = {
@@ -124,6 +125,7 @@ export type FormField = {
   formatter?: (value: string | number | undefined) => string;
   parser?: (value: string | undefined) => string;
   disabled?: boolean;
+  normalize?: (value: string, prevValue: string) => string;
 }
 
 export type Config = {

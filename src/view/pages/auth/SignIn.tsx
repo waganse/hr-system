@@ -1,35 +1,69 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateAuthState } from '../../../domain/store/authSlice';
 import { networkSignIn, networkSignOut } from '../../../domain/network';
-import { Form, Input, Checkbox, Button, message } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 
-export function SignIn() {
+export function SignIn(props: any) {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [defaultValue, setDefaultValue] = useState('');
 
   useEffect(() => {
     networkSignOut();
+    if (props.location.state?.initialId) {
+      setDefaultValue(props.location.state.initialId);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onFinish = async ({name, password}: any) => {
     try {
-      const user = await networkSignIn(name, password);
+      const response = await networkSignIn(name, password);
 
-      const state = {
-        isAuth: true,
-        user: {
-          name: user.username,
-          roles: user.signInUserSession.accessToken.payload["cognito:groups"],
+      if (response.challengeName) {
+        switch (response.challengeName) {
+          case 'NEW_PASSWORD_REQUIRED':
+            // do something
+            break;
         }
-      };
+      } else {
+        const id = response.username;
+        const email = response.attributes.email;
+        const group = response.attributes['custom:userGroup'];
 
-      dispatch(updateAuthState(state));
-      history.push('/employee')
+        const state = {
+          isAuth: true,
+          user: {
+            id,
+            email,
+            group,
+          }
+        };
+
+        dispatch(updateAuthState(state));
+        history.push('/employee')
+      }
     } catch(e) {
-      message.error('Failed to sign in');
+      if (e.code === 'UserNotConfirmedException') {
+        const state = {
+          isAuth: false,
+          user: {
+            id: '',
+            email: name,
+            group: '',
+          }
+        };
+
+        dispatch(updateAuthState(state));
+        history.push({
+          pathname: '/auth/verification',
+          state: { confirmException: true }
+        })
+      } else {
+        message.error(e.message);
+      }
     }
   }
 
@@ -42,7 +76,6 @@ export function SignIn() {
             style={{ width: '100%' }}
             layout="vertical"
             name="signin"
-            initialValues={{ remember: true }}
             requiredMark={false}
             onFinish={onFinish}
           >
@@ -51,7 +84,7 @@ export function SignIn() {
               name="name"
               rules={[{ required: true, message: 'Please input your user id!' }]}
             >
-              <Input />
+              <Input defaultValue={defaultValue} />
             </Form.Item>
 
             <Form.Item
@@ -60,10 +93,6 @@ export function SignIn() {
               rules={[{ required: true, message: 'Please input your password!' }]}
             >
               <Input.Password />
-            </Form.Item>
-
-            <Form.Item name="remember" valuePropName="checked">
-              <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
             <Form.Item style={{ textAlign: 'center' }}>
