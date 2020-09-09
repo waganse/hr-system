@@ -3,7 +3,7 @@ import { useHistory, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { initialPagePermission } from '../domain/store/accountSlice';
 import { networkSignOut } from '../domain/network';
-import { Layout, Menu, Row, Col, Button, message } from 'antd';
+import { Layout, Menu, Row, Col, Button, message, Space } from 'antd';
 import {
   MoneyCollectOutlined,
   PieChartOutlined,
@@ -50,7 +50,7 @@ export function PageLayout(props: any) {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Header className="header">
+      <Header className="header print-hidden">
         <Row justify="space-between">
           <Col>
             <NavLink to="/">
@@ -58,14 +58,17 @@ export function PageLayout(props: any) {
             </NavLink>
           </Col>
           <Col>
-            <Button onClick={signOutHandler}>
-              Logout
-            </Button>
+            <Space>
+              <span style={{ color: '#fff' }}>{authState.user.email}</span>
+              <Button onClick={signOutHandler}>
+                Logout
+              </Button>
+            </Space>
           </Col>
         </Row>
       </Header>
       <Layout>
-        <Sider collapsible collapsed={collapsed} onCollapse={onCollapseHandler} width={200} className="site-layout-background">
+        <Sider collapsible collapsed={collapsed} onCollapse={onCollapseHandler} width={200} className="site-layout-background print-hidden">
           <Menu
             theme="dark"
             mode="inline"

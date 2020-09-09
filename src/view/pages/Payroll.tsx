@@ -456,14 +456,14 @@ export function Payroll(props: any) {
     <PageLayout>
       <h2>Employee Payroll List</h2>
 
-      <div style={{marginBottom: 16}}>
+      <div style={{marginBottom: 16}} className="print-hidden">
         <Typography.Text type="warning">
           <InfoCircleOutlined />
           <span style={{ marginLeft: 8 }}>Payroll information can be edited after the target employee is registered by HR.</span>
         </Typography.Text>
       </div>
 
-      <Row justify="space-between" style={{ marginBottom: 16 }}>
+      <Row justify="space-between" style={{ marginBottom: 16 }} className="print-hidden">
         <Col span={10}>
           <Space size="middle">
             <Input prefix={<SearchOutlined className="site-form-item-icon" />} placeholder="Enter name..." onChange={onSearchHandler} />

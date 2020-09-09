@@ -22,34 +22,6 @@ export function Report() {
   const currentMonthYear = `${month}/${year}`;
   const [targetMonthYear, setTargetMonthYear] = useState(currentMonthYear);
 
-  // const data =  [
-  //   {
-  //     "id": "rust",
-  //     "label": "rust",
-  //     "value": 227,
-  //   },
-  //   {
-  //     "id": "go",
-  //     "label": "go",
-  //     "value": 507,
-  //   },
-  //   {
-  //     "id": "css",
-  //     "label": "css",
-  //     "value": 490,
-  //   },
-  //   {
-  //     "id": "make",
-  //     "label": "make",
-  //     "value": 98,
-  //   },
-  //   {
-  //     "id": "java",
-  //     "label": "java",
-  //     "value": 459,
-  //   }
-  // ];
-
   useEffect(() => {
     if (authState.isAuth) {
       fetchHandler({ filter: { workedMonthYear: { eq: targetMonthYear } } });
@@ -60,10 +32,6 @@ export function Report() {
   const fetchHandler = async (params: FetchParams) => {
     const payrollList = await networkFetchPayrollList(params);
     const departmentList = await networkFetchDepartmentList({});
-    console.clear();
-    console.log('===================');
-    console.log(payrollList);
-    console.log('===================');
     const { totalWageData, totalAmount } = getTotalWageByDepartment(payrollList.items, departmentList.items, targetMonthYear);
     setData(totalWageData as any);
     setTotal(totalAmount);
@@ -125,7 +93,7 @@ export function Report() {
     <PageLayout>
       <h2>Reporting</h2>
 
-      <Row justify="space-between" style={{ marginBottom: 16 }}>
+      <Row justify="space-between" style={{ marginBottom: 16 }} className="print-hidden">
         <Col span={10}>
           <DatePicker
             picker="month"

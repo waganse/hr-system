@@ -1,0 +1,26 @@
+@media print {
+    body {
+        size: A4 landscape;
+        page-break-before: always;
+    }
+
+    .print-hidden,
+    .ant-table-cell-fix-right {
+        display: none !important;
+    }
+
+    .ant-layout.ant-layout-has-sider > .ant-layout {
+        overflow: auto !important;
+        background: #fff !important;
+        padding: 0 !important;
+    }
+
+    .ant-layout-content {
+        padding: 0 !important;
+    }
+
+    table {
+        width: auto !important;
+        table-layout: auto !important;
+    }
+}

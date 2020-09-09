@@ -7,6 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import Amplify from 'aws-amplify';
 import aws_exports from './aws-exports';
 import { BrowserRouter } from 'react-router-dom';
+import './print.css';
 
 Amplify.configure(aws_exports);
 

@@ -386,7 +386,7 @@ export function Employee(props: any) {
     <PageLayout>
       <h2>Employee List</h2>
 
-      <Row justify="space-between" style={{ marginBottom: 16 }}>
+      <Row justify="space-between" style={{ marginBottom: 16 }} className="print-hidden">
         <Col span={6}>
           <Input prefix={<SearchOutlined className="site-form-item-icon" />} placeholder="Enter name..." onChange={onSearchHandler} />
         </Col>
