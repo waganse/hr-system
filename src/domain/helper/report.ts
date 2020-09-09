@@ -13,7 +13,6 @@ export const getTotalWageByDepartment = (
 
   const totalWageData = departmentList.map(dept => {
     const targetDeptTotal = targetMonthPayroll.reduce((acc, item) => {
-      console.log(acc, item, dept.name)
       return item.employee?.department === dept.name ? acc + getTotalWage(item.employee as EmployeeMaster, item) : acc;
     }, 0);
 

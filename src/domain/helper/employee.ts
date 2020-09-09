@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { networkFetchEmployeeList } from '../../domain/network';
-import { EmployeeMaster, DepartmentMaster, EmploymentTypeMaster } from '../../typings';
+import { EmployeeMaster, DepartmentMaster, EmploymentTypeMaster, TableColumn } from '../../typings';
 import { message } from 'antd';
 
 const employeeStateKeys = [
@@ -72,5 +72,47 @@ export const validateUserAccount = async (employeeList: EmployeeMaster[]) => {
   );
 
   return response;
+}
+
+export const getPdfOptions = (employeeList: EmployeeMaster[]): any => {
+  const excludedKeys = ['id', 'updatedAt', 'createdAt', 'salary', 'rate', 'fixedRate', 'commission'];
+
+  let keys: string[] = [];
+
+  const records = employeeList.map(employee => {
+    keys = Object.keys(employee).filter(key => !excludedKeys.includes(key));
+    return _.compact(_.flatten(keys.map(key => {
+      if (excludedKeys.includes(key)) {
+        return null;
+      }
+      return employee[key] ?? '-';
+    })));
+  });
+
+  return {
+    info: {
+      title: 'Employee list',
+    },
+    pageSize: 'A4',
+    pageOrientation: 'landscape',
+    footer: function(currentPage: number, pageCount: number) {
+      return [
+        { text: `Employee Management Sytem - ${currentPage.toString()} of ${pageCount}`, alignment: 'right', fontSize: 10, color: '#aaa', margin: [ 0, 0, 30, 10] }
+      ]
+    },
+    content: [
+      { text: 'Employee List', margin: [ 0, 16 ], fontSize: 16, bold: true },
+      {
+        layout: 'lightHorizontalLines',
+        fontSize: 10,
+        table: {
+          // headers are automatically repeated if the table spans over multiple pages
+          // you can declare how many rows should be treated as headers
+          headerRows: 1,
+          body: [ keys, ...records],
+        }
+      },
+    ],
+  }
 }
 

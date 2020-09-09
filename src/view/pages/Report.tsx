@@ -64,24 +64,24 @@ export function Report() {
         motionDamping={15}
         sortByValue={true}
         legends={[
-            {
-                anchor: 'bottom',
-                direction: 'row',
-                translateY: 56,
-                itemWidth: 100,
-                itemHeight: 18,
-                itemTextColor: '#999',
-                symbolSize: 18,
-                symbolShape: 'circle',
-                effects: [
-                    {
-                        on: 'hover',
-                        style: {
-                            itemTextColor: '#000'
-                        }
-                    }
-                ]
-            }
+          {
+            anchor: 'bottom',
+            direction: 'row',
+            translateY: 56,
+            itemWidth: 100,
+            itemHeight: 18,
+            itemTextColor: '#999',
+            symbolSize: 18,
+            symbolShape: 'circle',
+            effects: [
+              {
+                on: 'hover',
+                style: {
+                  itemTextColor: '#000'
+                }
+              }
+            ]
+          }
         ]}
       /> :
       <Empty style={{ margin: '200px auto' }} />
@@ -107,7 +107,7 @@ export function Report() {
         </Col>
       </Row>
 
-      <div style={{ width: '100%', height: 'calc(100vh - 255px)' }}>
+      <div style={{ width: '100%', height: 'calc(100vh - 300px)' }}>
         { responsivePie }
       </div>
     </PageLayout>

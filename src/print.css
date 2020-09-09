@@ -1,4 +1,8 @@
 @media print {
+    @page {
+        size : A4 landscape;
+    }
+
     body {
         size: A4 landscape;
         page-break-before: always;

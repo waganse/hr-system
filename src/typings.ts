@@ -32,6 +32,8 @@ export type EmployeeMaster = {
   fixedRate?: number;
   commission?: number;
   joinDate?: string | moment.Moment;
+  updatedAt?: string;
+  createdAt?: string;
   isNew?: boolean;
 }
 

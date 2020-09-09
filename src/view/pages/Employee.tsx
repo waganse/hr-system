@@ -13,14 +13,19 @@ import {
   networkFetchDepartmentList,
   networkFetchEmploymentTypeList,
 } from '../../domain/network';
-import { validateUserAccount, normalizeEmployeeImportObj } from '../../domain/helper';
+import { validateUserAccount, normalizeEmployeeImportObj, getPdfOptions } from '../../domain/helper';
 import { EmployeeMaster, FetchParams, Config } from '../../typings';
 import { Table, Space, Popconfirm, Button, Row, Col, message, Modal, Upload, Input } from 'antd';
-import { InboxOutlined, ImportOutlined, SearchOutlined, UserAddOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { InboxOutlined, ImportOutlined, DownloadOutlined, SearchOutlined, UserAddOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { RegisterForm } from '../components/common/RegisterForm'
 import { UploadChangeParam } from 'antd/lib/upload';
 import { PageLayout } from '../Layout';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+// @ts-ignore
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export function Employee(props: any) {
   const dispatch = useDispatch();
@@ -306,6 +311,14 @@ export function Employee(props: any) {
     setModalVisible(true);
   }
 
+  const onClickPdfMakeHandler = async () => {
+    const options = getPdfOptions(employeeList.items);
+    const d = new Date();
+    const date = `${d.getDate()}_${d.getMonth()+1}_${d.getFullYear()}`
+
+    pdfMake.createPdf(options).download(`Employee_list_${date}.pdf`);
+  }
+
   const onClickEditHandler = async (id: string) => {
     setFormVisible(true);
     setIsNew(false);
@@ -392,7 +405,7 @@ export function Employee(props: any) {
         </Col>
         <Col>
           <Row gutter={8} justify="end">
-            <Col span={12}>
+            <Col>
               <Button
                 type="primary"
                 shape="round"
@@ -402,7 +415,7 @@ export function Employee(props: any) {
                 Add new
               </Button>
             </Col>
-            <Col span={12}>
+            <Col>
               <Button
                 type="primary"
                 shape="round"
@@ -410,6 +423,16 @@ export function Employee(props: any) {
                 onClick={onClickImportHandler}
               >
                 Import data
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                type="primary"
+                shape="round"
+                icon={<DownloadOutlined />}
+                onClick={onClickPdfMakeHandler}
+              >
+                Download PDF
               </Button>
             </Col>
           </Row>

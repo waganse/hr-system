@@ -9,6 +9,7 @@ import { Payroll } from './view/pages/Payroll';
 import { Report } from './view/pages/Report';
 import { Master } from './view/pages/Master';
 import { Account } from './view/pages/Account';
+import { ResetPassword } from './view/pages/auth/ResetPassword';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/account" component={Account} />
         <Route path="/auth/signin" component={SignIn} />
         <Route path="/auth/verification" component={Verification} />
+        <Route path="/auth/reset" component={ResetPassword} />
       </Switch>
     </AuthProvider>
   );

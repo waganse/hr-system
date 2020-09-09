@@ -199,10 +199,6 @@ export function Account() {
       const response = await networkAddAccount({username: id, password, group});
 
       if (response) {
-        console.clear();
-console.log('===================');
-console.log(group);
-console.log('===================');
         await networkAddAccountToGroup(response.userSub, group);
       }
 

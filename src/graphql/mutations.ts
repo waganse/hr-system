@@ -22,11 +22,6 @@ export const createEmployee = /* GraphQL */ `
       fixedRate
       commission
       joinDate
-      image {
-        bucket
-        region
-        key
-      }
       createdAt
       updatedAt
     }
@@ -52,11 +47,6 @@ export const updateEmployee = /* GraphQL */ `
       fixedRate
       commission
       joinDate
-      image {
-        bucket
-        region
-        key
-      }
       createdAt
       updatedAt
     }
@@ -82,11 +72,6 @@ export const deleteEmployee = /* GraphQL */ `
       fixedRate
       commission
       joinDate
-      image {
-        bucket
-        region
-        key
-      }
       createdAt
       updatedAt
     }
@@ -118,11 +103,6 @@ export const createPayroll = /* GraphQL */ `
         fixedRate
         commission
         joinDate
-        image {
-          bucket
-          region
-          key
-        }
         createdAt
         updatedAt
       }
@@ -157,11 +137,6 @@ export const updatePayroll = /* GraphQL */ `
         fixedRate
         commission
         joinDate
-        image {
-          bucket
-          region
-          key
-        }
         createdAt
         updatedAt
       }
@@ -196,11 +171,6 @@ export const deletePayroll = /* GraphQL */ `
         fixedRate
         commission
         joinDate
-        image {
-          bucket
-          region
-          key
-        }
         createdAt
         updatedAt
       }

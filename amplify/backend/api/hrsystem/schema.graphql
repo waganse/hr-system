@@ -13,7 +13,6 @@ type Employee @model {
   fixedRate: Float
   commission: Float
   joinDate: String
-  image: S3Object
 }
 
 type Payroll @model @key(name: "byEmployee", fields: ["employeeId"]) {
@@ -23,12 +22,6 @@ type Payroll @model @key(name: "byEmployee", fields: ["employeeId"]) {
   workedMonthYear: String
   employeeId: ID!
   employee: Employee @connection(fields: ["employeeId"])
-}
-
-type S3Object {
-  bucket: String!
-  region: String!
-  key: String!
 }
 
 type Department @model {

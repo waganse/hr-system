@@ -464,7 +464,7 @@ export function Payroll(props: any) {
       </div>
 
       <Row justify="space-between" style={{ marginBottom: 16 }} className="print-hidden">
-        <Col span={10}>
+        <Col>
           <Space size="middle">
             <Input prefix={<SearchOutlined className="site-form-item-icon" />} placeholder="Enter name..." onChange={onSearchHandler} />
             <DatePicker
@@ -480,7 +480,7 @@ export function Payroll(props: any) {
         </Col>
         <Col>
           <Row gutter={8} justify="end">
-            <Col span={24}>
+            <Col>
               <Button
                 type="primary"
                 shape="round"

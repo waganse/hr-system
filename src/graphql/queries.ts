@@ -19,11 +19,6 @@ export const getEmployee = /* GraphQL */ `
       fixedRate
       commission
       joinDate
-      image {
-        bucket
-        region
-        key
-      }
       createdAt
       updatedAt
     }
@@ -51,11 +46,6 @@ export const listEmployees = /* GraphQL */ `
         fixedRate
         commission
         joinDate
-        image {
-          bucket
-          region
-          key
-        }
         createdAt
         updatedAt
       }
@@ -86,11 +76,6 @@ export const getPayroll = /* GraphQL */ `
         fixedRate
         commission
         joinDate
-        image {
-          bucket
-          region
-          key
-        }
         createdAt
         updatedAt
       }
