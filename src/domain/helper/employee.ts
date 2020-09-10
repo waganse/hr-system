@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { networkFetchEmployeeList } from '../../domain/network';
-import { EmployeeMaster, DepartmentMaster, EmploymentTypeMaster, TableColumn } from '../../typings';
+import { EmployeeMaster, DepartmentMaster, EmploymentTypeMaster } from '../../typings';
 import { message } from 'antd';
 
 const employeeStateKeys = [

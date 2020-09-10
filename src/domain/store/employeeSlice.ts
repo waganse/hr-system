@@ -46,7 +46,7 @@ export const employeeSlice = createSlice({
   },
 });
 
-export const { setManyEmployees, getOneEmployee, createOneEmployee, updateOneEmployee, deleteOneEmployee } = employeeSlice.actions;
+export const { setManyEmployees, createOneEmployee, updateOneEmployee, deleteOneEmployee } = employeeSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
