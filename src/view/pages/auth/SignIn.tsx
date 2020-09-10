@@ -5,6 +5,7 @@ import { Auth } from 'aws-amplify';
 import { updateAuthState } from '../../../domain/store/authSlice';
 import { networkSignIn, networkSignOut } from '../../../domain/network';
 import { Form, Input, Button, message, Modal } from 'antd';
+import logo from '../../../logo.png';
 
 export function SignIn(props: any) {
   const history = useHistory();
@@ -93,7 +94,9 @@ export function SignIn(props: any) {
       <div style={{ width: '100%', margin: 'auto', background: '#f7f7f7' }}>
         <div style={{ display: 'flex', alignItems: 'center', height: '100vh', maxWidth: '350px', margin: 'auto' }}>
           <div style={{ width: '100%' }}>
-            <h1 style={{ display: 'flex', alignItems: 'center' }}>EMS <small style={{ marginLeft: 16, fontSize: 14 }}>- Employee Management System -</small></h1>
+            <h1 style={{ textAlign: 'center', marginBottom: 16 }}>
+              <img src={logo} alt="EMS" style={{ width: 150 }}/>
+            </h1>
             <Form
               style={{ width: '100%' }}
               layout="vertical"
@@ -104,7 +107,7 @@ export function SignIn(props: any) {
               <Form.Item
                 label="ID"
                 name="name"
-                rules={[{ required: true, message: 'Please input your user id!' }]}
+                rules={[{ required: true, message: 'Please input your user id' }]}
               >
                 <Input defaultValue={defaultValue} />
               </Form.Item>
@@ -112,7 +115,7 @@ export function SignIn(props: any) {
               <Form.Item
                 label="Password"
                 name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
+                rules={[{ required: true, message: 'Please input your password' }]}
               >
                 <Input.Password />
               </Form.Item>
@@ -134,6 +137,7 @@ export function SignIn(props: any) {
         centered
         visible={modalVisible}
         footer={null}
+        onCancel={() => setModalVisible(false)}
       >
         <Form
           style={{ width: '100%' }}
@@ -146,7 +150,7 @@ export function SignIn(props: any) {
             label="Enter your login ID (e-mail)"
             name="username"
             rules={[
-              { required: true, message: 'Please input your user id!' },
+              { required: true, message: 'Please input your user id' },
               { type: 'email', message: 'Not a valid email' },
             ]}
           >

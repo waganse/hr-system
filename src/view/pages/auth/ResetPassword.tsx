@@ -54,7 +54,7 @@ export function ResetPassword(props: any) {
             <Form.Item
               label="Password"
               name="password"
-              rules={[{ required: true, message: 'Please input your password!' }]}
+              rules={[{ required: true, message: 'Please input password' }]}
             >
               <Input.Password />
             </Form.Item>
@@ -63,7 +63,7 @@ export function ResetPassword(props: any) {
               name="password2"
               dependencies={['password']}
               rules={[
-                { required: true, message: 'Please input your password!' },
+                { required: true, message: 'Please input password' },
                 ({ getFieldValue }) => ({
                   validator(rule, value) {
                     if (!value || getFieldValue('password') === value) {

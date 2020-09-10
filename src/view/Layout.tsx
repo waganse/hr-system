@@ -12,7 +12,7 @@ import {
   DownOutlined,
 } from '@ant-design/icons';
 import 'antd/dist/antd.css';
-import logo from '../logo.svg'
+import logo from '../logo2.png';
 import { PAGE_PERMISSION } from '../domain/store/store';
 import { selectAuth } from '../domain/store/authSlice';
 import { Auth } from 'aws-amplify';
@@ -95,7 +95,7 @@ export function PageLayout(props: any) {
           <Row justify="space-between">
             <Col>
               <NavLink to="/">
-                <img src={logo} alt="EMS" style={{ width: 100, height: 30 }} />
+                <img src={logo} alt="EMS" style={{ width: 100 }} />
               </NavLink>
             </Col>
             <Col>
