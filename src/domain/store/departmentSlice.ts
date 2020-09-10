@@ -16,13 +16,9 @@ export const departmentSlice = createSlice({
   name: 'DepartmentList',
   initialState,
   reducers: {
-    getManyDepartments: (state, action: PayloadAction<DepartmentState>) => {
+    setManyDepartments: (state, action: PayloadAction<DepartmentState>) => {
       state.items = action.payload.items;
       state.nextToken = action.payload.nextToken;
-    },
-    getOneDepartment: state => {
-    },
-    searchManyDepartments: state => {
     },
     createOneDepartment: (state, action: PayloadAction<DepartmentMaster>) => {
       state.items.push(action.payload);
@@ -38,7 +34,7 @@ export const departmentSlice = createSlice({
   },
 });
 
-export const { getManyDepartments, getOneDepartment, searchManyDepartments, createOneDepartment, updateOneDepartment, deleteOneDepartment } = departmentSlice.actions;
+export const { setManyDepartments, createOneDepartment, updateOneDepartment, deleteOneDepartment } = departmentSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

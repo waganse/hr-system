@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 import { selectAuth } from '../../domain/store/authSlice';
-import { getManyEmployees, createOneEmployee, updateOneEmployee, deleteOneEmployee, selectEmployee, initialEmployee } from '../../domain/store/employeeSlice';
-import { getManyDepartments, selectDepartment } from '../../domain/store/departmentSlice';
-import { getManyEmploymentTypes, selectEmploymentType } from '../../domain/store/employmentTypeSlice';
+import { setManyEmployees, createOneEmployee, updateOneEmployee, deleteOneEmployee, selectEmployee, initialEmployee } from '../../domain/store/employeeSlice';
+import { setManyDepartments, selectDepartment } from '../../domain/store/departmentSlice';
+import { setManyEmploymentTypes, selectEmploymentType } from '../../domain/store/employmentTypeSlice';
 import {
   networkFetchEmployeeList,
   networkCreateEmployee,
@@ -271,15 +271,15 @@ export function Employee(props: any) {
   }, [authState.isAuth]);
 
   const fetchEmployeeListHandler = async (params: FetchParams) => {
-    dispatch(getManyEmployees(await networkFetchEmployeeList(params)));
+    dispatch(setManyEmployees(await networkFetchEmployeeList(params)));
   }
 
   const fetchDepartmentListHandler = async (params: FetchParams) => {
-    dispatch(getManyDepartments(await networkFetchDepartmentList(params)));
+    dispatch(setManyDepartments(await networkFetchDepartmentList(params)));
   }
 
   const fetchEmploymentTypeListHandler = async (params: FetchParams) => {
-    dispatch(getManyEmploymentTypes(await networkFetchEmploymentTypeList(params)));
+    dispatch(setManyEmploymentTypes(await networkFetchEmploymentTypeList(params)));
   }
 
   const deleteEmployeeHandler = async (id: string) => {
@@ -382,7 +382,7 @@ export function Employee(props: any) {
       ]
     } : null;
 
-    dispatch(getManyEmployees(await networkFetchEmployeeList({ filter })));
+    dispatch(setManyEmployees(await networkFetchEmployeeList({ filter })));
   }
 
   const onCloseDrawerHandler = () => {

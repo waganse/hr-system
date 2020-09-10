@@ -11,11 +11,9 @@ export const payrollSlice = createSlice({
   name: 'payrollList',
   initialState,
   reducers: {
-    getManyPayrolls: (state, action: PayloadAction<PayrollState>) => {
+    setManyPayrolls: (state, action: PayloadAction<PayrollState>) => {
       state.items = action.payload.items;
       state.nextToken = action.payload.nextToken;
-    },
-    getOnePayroll: state => {
     },
     createOnePayroll: (state, action: PayloadAction<PayrollMaster>) => {
       state.items.push(action.payload);
@@ -31,7 +29,7 @@ export const payrollSlice = createSlice({
   },
 });
 
-export const { getManyPayrolls, getOnePayroll, createOnePayroll, updateOnePayroll, deleteOnePayroll } = payrollSlice.actions;
+export const { setManyPayrolls, createOnePayroll, updateOnePayroll, deleteOnePayroll } = payrollSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import { selectAuth } from '../../domain/store/authSlice';
-import { getManyEmployees, updateOneEmployee, selectEmployee, initialEmployee } from '../../domain/store/employeeSlice';
-import { getManyPayrolls, createOnePayroll, updateOnePayroll, selectPayroll } from '../../domain/store/payrollSlice';
-import { getManyDepartments, selectDepartment } from '../../domain/store/departmentSlice';
-import { getManyEmploymentTypes, selectEmploymentType, initialEmploymentType } from '../../domain/store/employmentTypeSlice';
+import { setManyEmployees, updateOneEmployee, selectEmployee, initialEmployee } from '../../domain/store/employeeSlice';
+import { setManyPayrolls, createOnePayroll, updateOnePayroll, selectPayroll } from '../../domain/store/payrollSlice';
+import { setManyDepartments, selectDepartment } from '../../domain/store/departmentSlice';
+import { setManyEmploymentTypes, selectEmploymentType, initialEmploymentType } from '../../domain/store/employmentTypeSlice';
 import {
   networkFetchEmployeeList,
   networkUpdateEmployee,
@@ -318,19 +318,19 @@ export function Payroll(props: any) {
   }, [employeeList.items, payrollList.items]);
 
   const fetchEmployeeListHandler = async (params: FetchParams) => {
-    dispatch(getManyEmployees(await networkFetchEmployeeList(params)));
+    dispatch(setManyEmployees(await networkFetchEmployeeList(params)));
   }
 
   const fetchPayrollListHandler = async (params: FetchParams) => {
-    dispatch(getManyPayrolls(await networkFetchPayrollList(params)));
+    dispatch(setManyPayrolls(await networkFetchPayrollList(params)));
   }
 
   const fetchDepartmentListHandler = async (params: FetchParams) => {
-    dispatch(getManyDepartments(await networkFetchDepartmentList(params)));
+    dispatch(setManyDepartments(await networkFetchDepartmentList(params)));
   }
 
   const fetchEmploymentTypeListHandler = async (params: FetchParams) => {
-    dispatch(getManyEmploymentTypes(await networkFetchEmploymentTypeList(params)));
+    dispatch(setManyEmploymentTypes(await networkFetchEmploymentTypeList(params)));
   }
 
   const createPayrollHandler = async ({ id, hoursWorked, bonus, salary, rate, fixedRate, commission }: any) => {
@@ -435,7 +435,7 @@ export function Payroll(props: any) {
       ]
     } : null;
 
-    dispatch(getManyEmployees(await networkFetchEmployeeList({ filter })));
+    dispatch(setManyEmployees(await networkFetchEmployeeList({ filter })));
   }
 
   const onClickImportHandler = async () => {

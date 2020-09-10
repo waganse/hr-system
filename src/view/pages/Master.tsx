@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAuth } from '../../domain/store/authSlice';
-import { getManyDepartments, createOneDepartment, updateOneDepartment, deleteOneDepartment, selectDepartment, initialDepartment } from '../../domain/store/departmentSlice';
-import { getManyEmploymentTypes, createOneEmploymentType, updateOneEmploymentType, deleteOneEmploymentType, selectEmploymentType, initialEmploymentType } from '../../domain/store/employmentTypeSlice';
+import { setManyDepartments, createOneDepartment, updateOneDepartment, deleteOneDepartment, selectDepartment, initialDepartment } from '../../domain/store/departmentSlice';
+import { setManyEmploymentTypes, createOneEmploymentType, updateOneEmploymentType, deleteOneEmploymentType, selectEmploymentType, initialEmploymentType } from '../../domain/store/employmentTypeSlice';
 import {
   networkFetchEmploymentTypeList,
   networkCreateEmploymentType,
@@ -30,7 +30,7 @@ export function Master() {
     department: {
       fetch: {
         network: networkFetchDepartmentList,
-        dispatch: getManyDepartments,
+        dispatch: setManyDepartments,
       },
       create: {
         network: networkCreateDepartment,
@@ -48,7 +48,7 @@ export function Master() {
     employmentType: {
       fetch: {
         network: networkFetchEmploymentTypeList,
-        dispatch: getManyEmploymentTypes,
+        dispatch: setManyEmploymentTypes,
       },
       create: {
         network: networkCreateEmploymentType,

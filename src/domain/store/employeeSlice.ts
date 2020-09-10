@@ -28,11 +28,9 @@ export const employeeSlice = createSlice({
   name: 'employeeList',
   initialState,
   reducers: {
-    getManyEmployees: (state, action: PayloadAction<EmployeeState>) => {
+    setManyEmployees: (state, action: PayloadAction<EmployeeState>) => {
       state.items = action.payload.items;
       state.nextToken = action.payload.nextToken;
-    },
-    getOneEmployee: state => {
     },
     createOneEmployee: (state, action: PayloadAction<EmployeeMaster>) => {
       state.items.push(action.payload);
@@ -48,7 +46,7 @@ export const employeeSlice = createSlice({
   },
 });
 
-export const { getManyEmployees, getOneEmployee, createOneEmployee, updateOneEmployee, deleteOneEmployee } = employeeSlice.actions;
+export const { setManyEmployees, getOneEmployee, createOneEmployee, updateOneEmployee, deleteOneEmployee } = employeeSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
