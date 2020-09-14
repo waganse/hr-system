@@ -1,0 +1,45 @@
+{
+  "targetMonthYear": "9/2020",
+  "data": [
+    {
+      "fullName": "Donald J. Trump",
+      "email": "sample1@mail.com",
+      "rate": 0,
+      "fixedRate": 0,
+      "salary": 10000000,
+      "commission": 0,
+      "hoursWorked": 160,
+      "bonus": 100000
+    },
+    {
+      "fullName": "Vladimir Putin",
+      "email": "sample2@mail.com",
+      "rate": 43000,
+      "fixedRate": 0,
+      "salary": 0,
+      "commission": 10,
+      "hoursWorked": 160,
+      "bonus": 0
+    },
+    {
+      "fullName": "Yoshihide Suga",
+      "email": "sample3@mail.com",
+      "rate": 30000,
+      "fixedRate": 40000,
+      "salary": 0,
+      "commission": 0,
+      "hoursWorked": 160,
+      "bonus": 0
+    },
+    {
+      "fullName": "Xi Jinping",
+      "email": "sample4@mail.com",
+      "rate": 330,
+      "fixedRate": 10,
+      "salary": 3300000,
+      "commission": 0,
+      "hoursWorked": 0,
+      "bonus": 0
+    }
+  ]
+}

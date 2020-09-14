@@ -10,22 +10,26 @@ import { Report } from './view/pages/Report';
 import { Master } from './view/pages/Master';
 import { Account } from './view/pages/Account';
 import { ResetPassword } from './view/pages/auth/ResetPassword';
+import { Instruction } from './view/pages/Instruction';
 
 function App() {
   return (
-    <AuthProvider>
+    <>
       <Switch>
-        <Route path="/" exact component={Landing} />
-        <Route path="/employee" component={Employee} />
-        <Route path="/payroll" component={Payroll} />
-        <Route path="/report" component={Report} />
-        <Route path="/master" component={Master} />
-        <Route path="/account" component={Account} />
-        <Route path="/auth/signin" component={SignIn} />
-        <Route path="/auth/verification" component={Verification} />
-        <Route path="/auth/reset" component={ResetPassword} />
+        <AuthProvider>
+          <Route path="/" exact component={Landing} />
+          <Route path="/employee" component={Employee} />
+          <Route path="/payroll" component={Payroll} />
+          <Route path="/report" component={Report} />
+          <Route path="/master" component={Master} />
+          <Route path="/account" component={Account} />
+          <Route path="/auth/signin" component={SignIn} />
+          <Route path="/auth/verification" component={Verification} />
+          <Route path="/auth/reset" component={ResetPassword} />
+          <Route path="/instruction" component={Instruction} />
+        </AuthProvider>
       </Switch>
-    </AuthProvider>
+    </>
   );
 }
 

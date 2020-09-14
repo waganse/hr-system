@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectAuth } from '../../../domain/store/authSlice';
 import { networkVerifyAccount } from '../../../domain/network';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, Typography } from 'antd';
 import { Auth } from 'aws-amplify';
 
 export function Verification(props: any) {
@@ -73,7 +73,7 @@ export function Verification(props: any) {
             </Form.Item>
           </Form>
           <div style={{ textAlign: 'center' }}>
-            <a href="#" onClick={resendCodeHandler}>Resend verification code</a>
+            <Typography.Link onClick={resendCodeHandler}>Resend verification code</Typography.Link>
           </div>
         </div>
       </div>

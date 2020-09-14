@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import _ from 'lodash';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { selectAuth } from '../../domain/store/authSlice';
@@ -7,8 +6,8 @@ import { setManyAccounts, selectAccount, initialAccount, createOneAccount, delet
 import { networkFetchManyAccounts, networkAddAccount, networkDisableAccount, networkAddAccountToGroup } from '../../domain/network';
 import { normalizeFetchedAccounts } from '../../domain/helper'
 import { Config, AccountMaster } from '../../typings';
-import { Table, Space, Button, Popconfirm, message, Row, Col } from 'antd';
-import { EditOutlined, DeleteOutlined, UserAddOutlined } from '@ant-design/icons';
+import { Table, Button, Popconfirm, message, Row, Col, Typography } from 'antd';
+import { InfoCircleOutlined, DeleteOutlined, UserAddOutlined } from '@ant-design/icons';
 import { RegisterForm } from '../components/common/RegisterForm'
 import { PageLayout } from '../Layout';
 import { USER_GROUPS, DATE_FORMAT } from '../../domain/store/store';
@@ -21,6 +20,8 @@ export function Account() {
   const [formVisible, setFormVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(initialAccount);
   const [isNew, setIsNew] = useState(true);
+  const d = new Date();
+  const today = `${`00${d.getDate()}`.slice(-2)}/${`00${d.getMonth() + 1}`.slice(-2)}/${d.getFullYear()}`
 
   const config: Config = {
     columns: [
@@ -60,18 +61,6 @@ export function Account() {
         width: 150,
       },
       {
-        title: 'Last pdated at',
-        dataIndex: 'updatedAt',
-        key: 'updatedAt',
-        width: 150,
-        sorter: (a: any , b: any) => {
-          const dateA = moment(a.updatedAt, DATE_FORMAT).unix();
-          const dateB = moment(b.updatedAt, DATE_FORMAT).unix();
-
-          return dateA - dateB;
-        },
-      },
-      {
         title: 'Created at',
         dataIndex: 'createdAt',
         key: 'createdAt',
@@ -87,15 +76,12 @@ export function Account() {
         title: 'Action',
         key: 'operation',
         fixed: 'right',
-        width: 85,
-        render: (text: string, record: AccountMaster) => (
-          <Space size="middle">
-            <Button type="primary" shape="circle" icon={<EditOutlined />} size="small" onClick={() => onClickEditHandler(record.id as string)} />
-            <Popconfirm title="Sure to delete?" onConfirm={() => deleteHandler(record.id as string)}>
-              <Button type="primary" danger shape="circle" icon={<DeleteOutlined />} size="small" />
-            </Popconfirm>
-          </Space>
-        ),
+        width: 70,
+        render: (text: string, record: AccountMaster) => record.id !== 'yotani2522@oramail.net' && record.id !== authState.user.email ? (
+          <Popconfirm title="Sure to delete?" onConfirm={() => deleteHandler(record.id as string)}>
+            <Button type="primary" danger shape="circle" icon={<DeleteOutlined />} size="small" />
+          </Popconfirm>
+        ) : null,
       },
     ],
     fields: [
@@ -119,6 +105,7 @@ export function Account() {
         ],
         placeholder: 'Enter new password',
         span: 24,
+        readOnly: !isNew,
       },
       {
         label: 'User Group',
@@ -131,6 +118,7 @@ export function Account() {
         rules: [
           { required: true, message: 'Please select a group' },
         ],
+        readOnly: !isNew,
       },
       {
         label: 'E-mail verified',
@@ -180,12 +168,12 @@ export function Account() {
     setSelectedItem(initialAccount);
   }
 
-  const onClickEditHandler = async (id: string) => {
-    setFormVisible(true);
-    setIsNew(false);
-    const targetItem = _.cloneDeep(accountList.items.filter(item => item.id === id)[0]);
-    setSelectedItem(targetItem);
-  }
+  // const onClickEditHandler = async (id: string) => {
+  //   setFormVisible(true);
+  //   setIsNew(false);
+  //   const targetItem = _.cloneDeep(accountList.items.filter(item => item.id === id)[0]);
+  //   setSelectedItem(targetItem);
+  // }
 
   const deleteHandler = async (id: string) => {
     await networkDisableAccount(id);
@@ -205,8 +193,9 @@ export function Account() {
       const userState: AccountMaster = {
         id,
         group,
-        verified: false,
+        verified: 'false',
         cognitoId: response?.userSub,
+        createdAt: today,
       }
 
       dispatch(createOneAccount(userState));
@@ -217,16 +206,56 @@ export function Account() {
     }
   }
 
-  const updateHandler = async ({ id, password, group, cognitoId }: any) => {
-    message.success('Updated successfully');
-    resetState();
-  }
+//   const updateHandler = async (input: any) => {
+//     try {
+//       AWS.config.update({
+//         credentials: new AWS.CognitoIdentityCredentials(
+//           { IdentityPoolId: 'ap-northeast-1:3446018a-9439-40b7-8c77-ff5721f48598',}
+//         ),
+//         region: 'ap-northeast-1',
+//       });
+//       const cognitoClient = new AWS.CognitoIdentityServiceProvider();
+
+//       const user = await Auth.currentAuthenticatedUser();
+//       const params = {
+//         UserPoolId: user.pool.userPoolId,
+//         Username: input.id,
+//         UserAttributes: [
+//           {
+//             Name: 'custom:userGroup',
+//             Value: input.group,
+//           }
+//         ]
+//       };
+
+// console.log('===================');
+// console.log(input, params, await user.pool.userPoolId);
+// console.log('===================');
+
+//       await cognitoClient.adminUpdateUserAttributes(params).promise();
+//       await networkAddAccountToGroup(input.cognitoId, input.group);
+//       await networkRemoveAccountFromGroup(input.cognitoId, selectedItem.group as string);
+
+//       const userState: AccountMaster = {
+//         id: input.id,
+//         group: input.group,
+//         verified: true,
+//         cognitoId: input.cognitoId,
+//       }
+
+//       dispatch(updateOneAccount(userState));
+//       message.success('Updated successfully');
+//       resetState();
+//     } catch(e) {
+//       message.error(e.message);
+//     }
+//   }
 
   const onSubmitFormHandler = (input: any) => {
     if (isNew) {
       createHandler(input);
     } else {
-      updateHandler(input);
+      // updateHandler(input);
     }
   }
 
@@ -242,6 +271,13 @@ export function Account() {
   return (
     <PageLayout>
       <h2>Account list</h2>
+
+      <div style={{marginBottom: 16}} className="print-hidden">
+        <Typography.Text type="warning">
+          <InfoCircleOutlined />
+          <span style={{ marginLeft: 8 }}>Your account and super admin account cannot be deleted.</span>
+        </Typography.Text>
+      </div>
 
       <Row justify="end" style={{ marginBottom: 16 }}>
         <Col>

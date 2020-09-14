@@ -13,7 +13,7 @@ export const initialPagePermission = {
 export const initialAccount: AccountMaster = {
   id: null,
   group: '',
-  verified: false,
+  verified: 'false',
   updatedAt: '-',
   createdAt: '-',
   cognitoId: '-',

@@ -11,7 +11,7 @@ export type AuthMaster = {
 export type AccountMaster = {
   id: string | null;
   group?: string;
-  verified?: boolean;
+  verified?: 'true' | 'false';
   updatedAt?: string;
   createdAt?: string;
   cognitoId?: string;

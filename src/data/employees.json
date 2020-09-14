@@ -1,0 +1,46 @@
+[
+  {
+    "fullName": "Donald J. Trump",
+    "email": "sample1@mail.com",
+    "age": 30,
+    "address": "address-A",
+    "contact": "+xx xxxxxxxx",
+    "designation": "USA",
+    "department": "Marketing",
+    "employmentType": "Full-time",
+    "joinDate": "17/06/2002"
+  },
+  {
+    "fullName": "Vladimir Putin",
+    "email": "sample2@mail.com",
+    "age": 20,
+    "address": "address-B",
+    "contact": "+xx xxxxxxxx",
+    "designation": "Rusia",
+    "department": "Sales",
+    "employmentType": "Part-time commissioned",
+    "joinDate": "18/09/2018"
+  },
+  {
+    "fullName": "Yoshihide Suga",
+    "email": "sample3@mail.com",
+    "age": 20,
+    "address": "address-C",
+    "contact": "+xx xxxxxxxx",
+    "designation": "Japan",
+    "department": "Design",
+    "employmentType": "Part-time fixed",
+    "joinDate": "31/01/2012"
+  },
+  {
+    "fullName": "Xi Jinping",
+    "email": "sample4@mail.com",
+    "age": 20,
+    "address": "address-D",
+    "contact": "+xx xxxxxxxx",
+    "designation": "China",
+    "department": "IT",
+    "employmentType": "Intern",
+    "joinDate": "12/12/2019"
+  }
+]

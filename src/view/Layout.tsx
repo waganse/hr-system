@@ -3,13 +3,15 @@ import { useHistory, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { initialPagePermission } from '../domain/store/accountSlice';
 import { networkSignOut } from '../domain/network';
-import { Layout, Menu, Row, Col, Button, message, Dropdown, Modal, Form, Input } from 'antd';
+import { Layout, Menu, Row, Col, Button, message, Dropdown, Modal, Form, Input, Typography } from 'antd';
 import {
-  MoneyCollectOutlined,
+  TeamOutlined,
+  DollarOutlined,
   PieChartOutlined,
   UserOutlined,
   SettingOutlined,
   DownOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import logo from '../logo2.png';
@@ -79,11 +81,15 @@ export function PageLayout(props: any) {
   const menu = (
     <Menu>
       <Menu.Item key="0">
-        <a onClick={onClickChangePassword}>Change password</a>
+        <Typography.Link onClick={onClickChangePassword} style={{ color: 'initial' }}>
+          Change password
+        </Typography.Link>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="1">
-        <a onClick={onClickSignOut}>Sign out</a>
+      <Menu.Item key="1" icon={<LogoutOutlined />}>
+        <Typography.Link onClick={onClickSignOut} style={{ color: 'initial' }}>
+          Sign out
+        </Typography.Link>
       </Menu.Item>
     </Menu>
   );
@@ -100,9 +106,9 @@ export function PageLayout(props: any) {
             </Col>
             <Col>
               <Dropdown overlay={menu} trigger={['click']}>
-                <a onClick={e => e.preventDefault()} style={{ color: '#fff' }}>
+                <Typography.Link style={{ color: '#fff' }}>
                   {authState.user.email} <DownOutlined />
-                </a>
+                </Typography.Link>
               </Dropdown>
             </Col>
           </Row>
@@ -117,12 +123,12 @@ export function PageLayout(props: any) {
               onClick={onClickNav}
             >
               { permission.employee ?
-                <Menu.Item key="employee" icon={<UserOutlined />} style={{ marginTop: 0 }}>
+                <Menu.Item key="employee" icon={<TeamOutlined />} style={{ marginTop: 0 }}>
                   Employee List
                 </Menu.Item> : null
               }
               { permission.payroll ?
-                <Menu.Item key="payroll" icon={<MoneyCollectOutlined />}>
+                <Menu.Item key="payroll" icon={<DollarOutlined />}>
                   Payroll
                 </Menu.Item> : null
               }
@@ -131,14 +137,14 @@ export function PageLayout(props: any) {
                   Report
                 </Menu.Item> : null
               }
+              { permission.account ?
+                <Menu.Item key="account" icon={<UserOutlined />}>
+                  Account List
+                </Menu.Item> : null
+              }
               { permission.master ?
                 <Menu.Item key="master" icon={<SettingOutlined />}>
                   Master Data
-                </Menu.Item> : null
-              }
-              { permission.account ?
-                <Menu.Item key="account" icon={<SettingOutlined />}>
-                  Account List
                 </Menu.Item> : null
               }
             </Menu>

@@ -18,6 +18,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/recharts": "^1.8.15",
     "antd": "^4.6.3",
+    "aws-sdk": "^2.749.0",
     "lodash": "^4.17.20",
     "pdfmake": "^0.1.68",
     "react": "^16.13.1",

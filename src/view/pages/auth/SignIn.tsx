@@ -4,19 +4,19 @@ import { useDispatch } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { updateAuthState } from '../../../domain/store/authSlice';
 import { networkSignIn, networkSignOut } from '../../../domain/network';
-import { Form, Input, Button, message, Modal } from 'antd';
+import { Form, Input, Button, message, Modal, Typography } from 'antd';
 import logo from '../../../logo.png';
 
 export function SignIn(props: any) {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [defaultValue, setDefaultValue] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [ form ] = Form.useForm();
 
   useEffect(() => {
     networkSignOut();
     if (props.location.state?.initialId) {
-      setDefaultValue(props.location.state.initialId);
+      form.setFieldsValue({ name: props.location.state.initialId });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -98,6 +98,7 @@ export function SignIn(props: any) {
               <img src={logo} alt="EMS" style={{ width: 150 }}/>
             </h1>
             <Form
+              form={form}
               style={{ width: '100%' }}
               layout="vertical"
               name="signin"
@@ -109,7 +110,7 @@ export function SignIn(props: any) {
                 name="name"
                 rules={[{ required: true, message: 'Please input your user id' }]}
               >
-                <Input defaultValue={defaultValue} />
+                <Input />
               </Form.Item>
 
               <Form.Item
@@ -127,7 +128,7 @@ export function SignIn(props: any) {
               </Form.Item>
             </Form>
             <div style={{ textAlign: 'center' }}>
-              <a href="#" onClick={onClickForgotPassword}>Forgot password</a>
+              <Typography.Link onClick={onClickForgotPassword}>Forgot password</Typography.Link>
             </div>
           </div>
         </div>

@@ -56,7 +56,7 @@ export const PAGE_PERMISSION = {
     account: false,
   },
   accountAdmin: {
-    employee: true,
+    employee: false,
     payroll: true,
     report: true,
     master: false,
