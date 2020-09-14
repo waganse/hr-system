@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateAuthState } from '../domain/store/authSlice';
 import { networkFetchAuthState } from '../domain/network'
+import { PAGE_PERMISSION, INIT_PAGE } from '../domain/store/store'
 
 export function AuthProvider(props: any) {
   const history = useHistory();
@@ -17,6 +18,7 @@ export function AuthProvider(props: any) {
   const fetchAuthHandler = async () => {
     try {
       const user = await networkFetchAuthState();
+      const path = props.location.pathname.slice(1);
 
       const isAuth = true;
       const id = user.username;
@@ -31,6 +33,10 @@ export function AuthProvider(props: any) {
           group,
         }
       }));
+
+      if (!PAGE_PERMISSION[group][path]) {
+        history.push(INIT_PAGE[group]);
+      }
     } catch {
       history.push('/auth/signin');
     }

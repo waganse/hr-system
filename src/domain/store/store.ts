@@ -63,3 +63,9 @@ export const PAGE_PERMISSION = {
     account: false,
   }
 };
+
+export const INIT_PAGE = {
+  admin: 'employee',
+  hrAdmin: 'employee',
+  accountAdmin: 'payroll',
+};
