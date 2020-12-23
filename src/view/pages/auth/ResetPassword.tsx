@@ -52,14 +52,14 @@ export function ResetPassword(props: any) {
               <Input />
             </Form.Item>
             <Form.Item
-              label="Password"
+              label="New password"
               name="password"
               rules={[{ required: true, message: 'Please input password' }]}
             >
               <Input.Password />
             </Form.Item>
             <Form.Item
-              label="Password (confirmation)"
+              label="New password (confirmation)"
               name="password2"
               dependencies={['password']}
               rules={[

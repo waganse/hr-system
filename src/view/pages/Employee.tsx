@@ -21,10 +21,9 @@ import moment from 'moment';
 import { RegisterForm } from '../components/common/RegisterForm'
 import { UploadChangeParam } from 'antd/lib/upload';
 import { PageLayout } from '../Layout';
-import * as pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 
-// @ts-ignore
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export function Employee(props: any) {

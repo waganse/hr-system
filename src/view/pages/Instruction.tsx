@@ -37,7 +37,7 @@ export function Instruction() {
         <p>Users can change their password after sign-in.</p>
 
         <div style={{ maxWidth: 800, margin: 'auto' }}>
-          <video src="https://hr-system-assets.s3-ap-northeast-1.amazonaws.com/account.mp4" controls width="100%" />
+          <video src="https://hr-system-assets.s3-ap-northeast-1.amazonaws.com/account.mp4" controls width="100%" poster="https://hr-system-assets.s3-ap-northeast-1.amazonaws.com/cover.jpg" />
         </div>
       </Col>
       <Col span={24}>

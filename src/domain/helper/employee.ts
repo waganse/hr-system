@@ -81,12 +81,12 @@ export const getPdfOptions = (employeeList: EmployeeMaster[]): any => {
 
   const records = employeeList.map(employee => {
     keys = Object.keys(employee).filter(key => !excludedKeys.includes(key));
-    return _.compact(_.flatten(keys.map(key => {
+    return _.compact(keys.map(key => {
       if (excludedKeys.includes(key)) {
         return null;
       }
       return employee[key] ?? '-';
-    })));
+    }));
   });
 
   return {

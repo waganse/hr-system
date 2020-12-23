@@ -34,7 +34,7 @@ export function AuthProvider(props: any) {
         }
       }));
 
-      if (!PAGE_PERMISSION[group][path]) {
+      if (!PAGE_PERMISSION[group][path] && path !== 'instruction') {
         history.push(INIT_PAGE[group]);
       }
     } catch {
